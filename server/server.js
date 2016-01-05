@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var nodemailer = require('nodemailer');
 var app = express();
 
 // initialize express
