@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var eventSchema = new Schema({
+  username: String,
   eventDate: Date,
   eventDescription: String,
   eventAlert: Boolean,
