@@ -1,20 +1,20 @@
 //parent module
 // inject children modules for access
-angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory'])
+angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise('signup');
     $httpProvider.interceptors.push('AttachToken');
-    //runs before reaching server and 
+    //runs before reaching server and
     //pushes the result of what we have defined with factory function
 
-    $stateProvider 
+    $stateProvider
       .state('signupPage', {
-        url : '/signup', 
+        url : '/signup',
         views: {
           'indexPage' : {
             templateUrl : 'views/signup.html',
             controller : 'userSignUp'
-          }         
+          }
         },
         data : { authenticate: false }
       })
@@ -35,19 +35,25 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
         data : { authenticate: true }
       })
       .state('loginupPage', {
-        url : '/login', 
+        url : '/login',
         views: {
           'indexPage' : {
             templateUrl : 'views/login.html',
             controller : 'userLogin'
-          }         
+          }
         },
         data : { authenticate: false }
       })
+      .state('houseBuilder', {
+        url : '/houseBuilder',
+        templateUrl : 'views/houseBuilder.html',
+        controller : 'houseBldrController'
+        //add data : {authenticate}
+      })
     })
-  
+
   .factory('AttachToken', function($window) {
-    return { 
+    return {
       request : function(http) {
         var token = $window.localStorage.getItem('dibsToken');
         if(token) {
@@ -58,7 +64,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
       }
     };
   })
-  
+
   .run(function($state, $rootScope, SignUpFactory) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
       if(toState.data.authenticate === true && !SignUpFactory.validToken) {
