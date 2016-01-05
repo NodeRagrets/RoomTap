@@ -24,7 +24,7 @@ module.exports = {
       })
       .then(function(createdUser) {
         var token = jwt.encode(createdUser, 'WILDCARD');
-        res.json(token);
+        res.status(200).send(token);
       });
   },
 
