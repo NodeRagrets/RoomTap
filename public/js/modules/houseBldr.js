@@ -1,4 +1,4 @@
 angular.module('houseBuilder', [])
-    .controller('houseBldr', function(){
-
+    .controller('houseBldr', '$scope', function($scope){
+      
     })
