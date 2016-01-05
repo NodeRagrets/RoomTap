@@ -14,4 +14,5 @@ angular.module('houseBuilder', [])
             alert('You must enter a roomName');
           }
         }
+        
     })
