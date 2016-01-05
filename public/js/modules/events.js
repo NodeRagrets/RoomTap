@@ -24,6 +24,7 @@ angular.module('eventsInfo', [])
             console.log('This is the flag', diff);
           }
           var formattedEvents = Eventstored.formatData(events);
+          console.log("HERE IS FORMATTED EVENTS", formattedEvents);
           $scope.bookedEvents = formattedEvents;
         });
       }, 500);
@@ -65,8 +66,8 @@ angular.module('eventsInfo', [])
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
       Eventstored.eventData($events)
-      .then(function(message) {
-        if(!message.data.result){
+      .then(function(response) {
+        if(!response.data.result){
           alert('Someone else called Dibs!');
         }
       });
