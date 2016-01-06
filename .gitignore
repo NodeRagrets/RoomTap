@@ -5,3 +5,6 @@ node_modules
 
 #Bower Components 
 public/lib/
+
+server/db/*.sqlite
+server/db/sqlite3.exe
