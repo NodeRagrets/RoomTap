@@ -1,13 +1,11 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', '$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventDescription = '';
-    $scope.eve.eventAlert = '';
     $scope.eve.eventTime = '';
-    $scope.eve.roomName = '';
-    $scope.eve.houseName = 'Hacker House';
+    $scope.eve.roomNames = [];
 
     $scope.refreshEvents = function() {
       $interval(function(){
@@ -24,6 +22,7 @@ angular.module('eventsInfo', [])
             console.log('This is the flag', diff);
           }
           var formattedEvents = Eventstored.formatData(events);
+          console.log("HERE IS FORMATTED EVENTS", formattedEvents);
           $scope.bookedEvents = formattedEvents;
         });
       }, 500);
@@ -52,7 +51,7 @@ angular.module('eventsInfo', [])
 
     $scope.highlightEvents = function(event) {
     console.log('test', event.diff);
-      
+
         if(event.diff <= 1){
           console.log(true);
           return true;
@@ -64,9 +63,9 @@ angular.module('eventsInfo', [])
 
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
-      Eventstored.eventData($events)
-      .then(function(message) {
-        if(!message.data.result){
+      Eventstored.postEvent($events)
+      .then(function(response) {
+        if(!response.data.result) {
           alert('Someone else called Dibs!');
         }
       });
@@ -78,7 +77,7 @@ angular.module('eventsInfo', [])
       $state.go('signupPage');
     };
 
-    //TIME ADDON
+    //TIME ADDON 
     $scope.eve.eventDate = new Date();
     $scope.hstep = 1;
     $scope.mstep = 1;

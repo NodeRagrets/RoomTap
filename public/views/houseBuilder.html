@@ -1,0 +1,36 @@
+
+
+<div ng-controller='houseBldr'>
+  <div>
+    <a href='/#/dashboard'>Book a room </a>
+  </div>
+  <h2>House Builder</h2>
+  <h4>What rooms are in your house?</h4>
+  <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' novalidate>
+    <input placeholder= 'Room Name' type= 'text' name= 'roomName' ng-model= 'data.roomName'>
+      <select placeholder='Type of Room'  ng-model='data.roomType' required>
+        <option value='' disabled selected>Select room type</option>
+        <option>Kitchen</option>
+        <option>Bedroom</option>
+        <option>Bathroom</option>
+        <option>Living Room</option>
+        <option>Dining Room</option>
+        <option>Garage</option>
+        <option>Misc. Room</option>
+      </select>
+    <input type= 'submit' value= 'Add Room'>
+  </form>
+  <!-- should have an input for calling the room a name and then a drop down on what type of room it is -->
+
+  <h5>Rooms in your house:</h5>
+  <div ng-repeat='room in house'>
+    <p>{{room}}</p>
+  </div>
+
+  <!-- TODO: Floors -->
+</div>
+<div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
+  <div class="container">
+    <p id="copyright-text">© 2016 RoomTap</p>
+  </div>
+</div>

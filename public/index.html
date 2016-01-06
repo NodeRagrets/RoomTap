@@ -6,10 +6,15 @@
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
     <link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <title>Dibs helping make roommates happy</title>
+    <title>Roomtap: Tap that room</title>
 </head>
 
 <body>
+  <div id="nav-container">
+    <div class="container">
+        <img id="logo-image" src="./css/dibs3.png" alt="Ball Script Logo">
+    </div>
+  </div>
     <!-- views are injected here -->
     <div ui-view="indexPage"></div>
     <script src="/lib/angular/angular.min.js"></script>
@@ -22,9 +27,12 @@
     <script src="/js/modules/events.js"></script>
     <script src="/js/modules/signup.js"></script>
     <script src="/js/modules/login.js"></script>
+    <script src="/js/modules/houseBldr.js"></script>
     <script src="/js/factories/eventFactory.js"></script>
     <script src="/js/factories/signupFactory.js"></script>
     <script src="/js/factories/loginFactory.js"></script>
+    <script src="/js/factories/houseFactory.js"></script>
+    <script src="/js/factories/socketFactory.js"></script>
     <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/js/appRoutes.js"></script>
 </body>
