@@ -1,10 +1,12 @@
 var userModel = require('./userModel.js');
 var jwt = require('jwt-simple');
 var Promise = require('bluebird');
+var bcrypt = require('bcrypt-nodejs');
 Promise.promisifyAll(require('mongoose'));
 
 module.exports = {
   signup: function(req, res) {
+    var newUser = req.body.userData;
     var storeUser = userModel.create.bind(userModel);
     //Since all mongoose functions are promises,
     //we need to set the this context of promise function.
@@ -19,23 +21,31 @@ module.exports = {
         if(user){ 
           throw new Error('User Exists');
         } else {
-          return storeUser(req.body.userData);
+          bcrypt.hash(newUser.password, null, null, function(error, hash) {
+            newUser.password = hash;
+            return storeUser(newUser);
+          })
         }
       })
       .then(function(createdUser) {
         var token = jwt.encode(createdUser, 'WILDCARD');
-        res.json(token);
+        res.status(200).send(token);
       });
   },
 
   login: function(req, res) {
+    var user = req.body.loginData;
     var check = userModel.findOne.bind(userModel);
 
-    check({ 'username': req.body.loginData.username,
-        'password': req.body.loginData.password })
+    check({ 'username': req.body.loginData.username})
       .then(function(result) {
         if(result){
-          return res.json({ result: true });
+          bcrypt.compare(user.password, result.password, function(error, isMatch) {
+            if(isMatch) {
+              return res.json({ result: true });
+            }
+            res.status(401).send({result:false});
+          })
           //Users exists and password matches
             //pass them through. 
         } else {

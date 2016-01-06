@@ -7,23 +7,23 @@ module.exports = {
     //checks if event already exists
     eventModel.findOne({ 
       'eventDate': req.body.dibEvent.eventDate,
-      'roomName': req.body.dibEvent.roomName
+      'rooms': req.body.dibEvent.rooms
     }).then(function(result) {
       if(result){
-        res.json({ result: false });
+        res.status(403).send({ result: false });
       } else {
         var storeEvent = eventModel.create.bind(eventModel);
         storeEvent(req.body.dibEvent);
-        res.json({ result: true });
+        res.status(200).send({ result: true });
       }
     });
   },
 
-  getEvent: function(req,res) {
+  getEvents: function(req,res) {
     eventModel.find({'eventDate' : { $gte : new Date()} })
       .sort({eventDate: 1})
       .then(function(booked) {
-        return res.json(booked);
+        return res.status(200).send(booked);
       });
   }
 };
