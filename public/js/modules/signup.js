@@ -1,5 +1,5 @@
 angular.module('userInfo', [])
-  .controller('userSignUp', function($scope, $window, $state, SignUpFactory) {
+  .controller('userSignUp', '$scope', '$window', '$state', 'SignUpFactory', function($scope, $window, $state, SignUpFactory) {
     $scope.user = {};
     $scope.user.username = '';
     $scope.user.email = '';
@@ -13,7 +13,7 @@ angular.module('userInfo', [])
       } else if($scope.user.password === '') {
         alert("Must Enter Password");
       } else {
-        $state.go('dashboardPage');	
+        $state.go('dashboardPage');
         SignUpFactory.signUpData($scope.user)
           .then(function(token) {
             $window.localStorage
@@ -23,6 +23,6 @@ angular.module('userInfo', [])
     },
 
     $scope.loginPage = function() {
-      $state.go('loginupPage');      
+      $state.go('loginupPage');
     };
 });
