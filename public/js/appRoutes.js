@@ -48,8 +48,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
         url : '/houseBuilder',
         views: {
           'indexPage' : {
-            templateUrl : 'views/houseBuilder.html',
-            controller : 'houseBldrController'
+            templateUrl : 'views/houseBuilder.html'
           }
         },
         data : {authenticate: false}
