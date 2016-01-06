@@ -1,6 +1,6 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', '$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventDescription = '';
@@ -53,7 +53,7 @@ angular.module('eventsInfo', [])
 
     $scope.highlightEvents = function(event) {
     console.log('test', event.diff);
-      
+
         if(event.diff <= 1){
           console.log(true);
           return true;
