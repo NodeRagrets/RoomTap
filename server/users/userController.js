@@ -1,8 +1,6 @@
-var userModel = require('./userModel.js');
 var jwt = require('jwt-simple');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
-Promise.promisifyAll(require('mongoose'));
 
 module.exports = {
   signup: function(req, res) {
