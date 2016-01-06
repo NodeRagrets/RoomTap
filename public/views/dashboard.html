@@ -2,11 +2,15 @@
 
 <div class="container">
   <div class="row">
+    <div>
+      <a href='/#/houseBuilder'>Build your house </a>
+    </div>
     <div class="col-md-5">
       <div class="nav nav-list">
         <div class="sideBar">
+
 <!-- Angular datePicker -->
-          <h3>Create Dibs</h3>
+          <h3>Reserve a Room</h3>
 
           <div class="input-group">
             <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="eve.eventDate" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
@@ -46,7 +50,7 @@
                 <input type="checkbox" ng-model="eve.eventAlert"><span id="alert-roommates-padding">Please Alert Roommates</span></input>
             </div> -->
 
-            <button class="submit-btn" type="submit" ng-click="eventSubmit()">Set Room Dibs!!!</button>
+            <button class="submit-btn" type="submit" ng-click="eventSubmit()">Set Room Tap!!!</button>
             <!--3DONE ^ what are we going to do with this data -->
         </div>
 
@@ -65,7 +69,7 @@
 <!-- footer -->
 <div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
   <div class="container">
-    <p id="copyright-text">© 2016 Dibs</p>
+    <p id="copyright-text">© 2016 RoomTap</p>
       <button id="logout-btn" type="submit" ng-click="signout()">Logout</button>
   </div>
 </div>
