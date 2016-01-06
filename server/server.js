@@ -5,7 +5,6 @@ var io = require('socket.io')(server);
 
 
 // initialize express
-// Mongoose DB Connection
 
 
 //checking to see if PORT# is defined otherwise use 3000
