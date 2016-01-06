@@ -5,7 +5,7 @@ angular.module('houseFactory',[])
 
           return $http({
             method: 'POST',
-            url: '/api/', //TODO finish Url
+            url: '/api/houses/build', //TODO finish Url
             data: rooms
           }).then(function(response){
             return response.data;
