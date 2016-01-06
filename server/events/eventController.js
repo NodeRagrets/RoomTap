@@ -33,7 +33,7 @@ module.exports = {
         };
 
         emailCtrl.transport;
-        emailCtrl.sendEmail = function(emailData);
+        emailCtrl.sendEmail(emailData);
 
         //-------- ^ nodeMailer ^ --------         
         res.status(200).send({ result: true });
