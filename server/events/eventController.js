@@ -7,7 +7,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 module.exports = {
   postEvent: function(req,res) {
     //NOTE: we'll need to 
-
+    console.log("inside postevent, eventCtrl serverside");
     var eventObj = { // got it!
       name: req.body.data.eventName, 
       description: req.body.data.eventDescription,
@@ -16,7 +16,7 @@ module.exports = {
     };
 
     var userObj = {
-      username: '' //jwt
+      username: '' //jwt 
     };
 
     var homeObj = {
@@ -34,17 +34,35 @@ module.exports = {
         console.log(roomsArray);
         //NOTE: need to console log roomsArray to know what's on it, to filter for the roomnames that came in on req.body.data.roomNames
         helpers.addEvent(eventObj, userObj, homeObj, roomsArray);
+
+        //INSERT NODEMAILER CODE HERE 
+
       });
-
-    
-
-    helpers.getRooms()
-    
-    helpers.addEvent().then(function(){})
   },
 
+
+
   loadEvents: function(req,res) {
-    helpers.getEvents().then(function(){})
+    var userObj = {
+      username: '' //jwt 
+    };
+
+    var homeObj = {
+      address: ''
+    };
+
+    helpers.getUser(userObj)
+      .then(function(user) {
+        homeObj.address = user.get('HomeId');
+      });    
+
+    helpers.getEvents(homeObj)
+      .then(function(eventsArray) {
+        console.log("HERE IS EVENTS ARRAY RETURNED FROM DB", eventsArray);
+        //NOTE: depending on the consolelog above, may need to modify the array before sending it back
+        res.status(200).send(eventsArray);
+    })
+
   }
 }
 
