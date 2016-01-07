@@ -1,11 +1,11 @@
 angular.module('eventsInfoFactory', [])
 .factory('Eventstored', function($http) {
   //posts events to database
-  var postEvent = function(eventData) {
+  var postEvent = function(eventObj) {
     return $http({
       method: 'POST',
       url: '/api/events/booked',
-      data: eventData
+      data: eventObj
     }).then(function(responseObj){
       return responseObj;
     });
@@ -37,7 +37,7 @@ angular.module('eventsInfoFactory', [])
   };
 
   return {
-    eventData : eventData,
+    postEvent : postEvent,
     getData : getData,
     formatData : formatData
   };

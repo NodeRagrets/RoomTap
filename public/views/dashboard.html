@@ -1,5 +1,4 @@
 
-
 <div class="container">
   <div class="row">
     <div>
@@ -24,7 +23,6 @@
 <!-- Angular datePicker End -->
 <!-- Angular TimePicker -->
           <div class="timePicker">
-
             <div class="timePickerLeft">
               <uib-timepicker ng-model="eve.eventDate" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian" class='centerTime'></uib-timepicker>
             </div>
@@ -40,9 +38,9 @@
 
           <h4>Pick a room</h4>
             <div class="btn-group">
-              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-checkbox="'Kitchen'" uncheckable>Kitchen</label>
-              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-checkbox="'Living Room'" uncheckable>Living Room</label>
-              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-checkbox="'Entire House'" uncheckable>Entire House</label>
+              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-radio="'Kitchen'" uncheckable>Kitchen</label>
+              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-radio="'Living Room'" uncheckable>Living Room</label>
+              <label class="btn btn-success room-btn" ng-model="eve.roomName" uib-btn-radio="'Entire House'" uncheckable>Entire House</label>
             </div>
 
 <!--             <div>
