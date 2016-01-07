@@ -30,8 +30,8 @@ module.exports = {
 
 
   login: function(req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+    var user = req.body.loginData;
+    var password = req.body.loginData.password;
 
     if(!username || !password) {
       return res.status(401).send('Please enter your username and your password.');
