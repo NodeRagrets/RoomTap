@@ -60,7 +60,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
       request : function(http) {
         var token = $window.localStorage.getItem('dibsToken');
         if(token) {
-        http.headers["x-access-token"] = token;
+        http.headers["authorization"] = token;
         }
         http.headers["Allow-Control-Allow-Origin"] = "*";
         return http;
