@@ -72,7 +72,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
     var getUserInfo = function(){
       var _self = this;
 
-      FB.api('/me', function(res){
+      FB.api('/me', {fields: 'name, email'}, function(res){
 
         $rootScope.$apply(function(){
           $rootScope.user = _self.user = res;
