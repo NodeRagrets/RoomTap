@@ -1,0 +1,41 @@
+
+
+<div ng-controller='houseBldr'>
+  <div>
+    <a href='/#/dashboard'>Reserve a room </a>
+  </div>
+  <h2>House Builder</h2>
+
+  <h4>What is your address? <h4>
+  <form ng-submit= 'addAddress()' name = 'addresForm' novalidate>
+    <input placeholder='Address' type = 'text' name= 'address' ng-model='data.address' required></input>
+    <input type = 'submit' value = 'Add Address'></input>
+  </form>
+
+  <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' ng-if = 'addedHouse === true'novalidate>
+    <h4>What rooms are in your house?</h4>
+    <input placeholder= 'Room Name' type= 'text' name= 'roomName' ng-model= 'data.roomName'required>
+      <select placeholder='Type of Room'  ng-model='data.roomType' required>
+        <option value='' disabled selected>Select room type</option>
+        <option>Kitchen</option>
+        <option>Bedroom</option>
+        <option>Bathroom</option>
+        <option>Living Room</option>
+        <option>Dining Room</option>
+        <option>Garage</option>
+        <option>Misc. Room</option>
+      </select>
+    <input type= 'submit' value= 'Add Room'>
+  </form>
+  <h5 ng-if = 'addedHouse === true'>Rooms in your house:</h5>
+  <div ng-repeat='room in data.viewArray'>
+    <p>{{room}}</p>
+  </div>
+
+  <!-- TODO: Floors -->
+</div>
+<div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
+  <div class="container">
+    <p id="copyright-text">© 2016 RoomTap</p>
+  </div>
+</div>

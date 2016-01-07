@@ -1,15 +1,12 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var morgan = require('morgan');
+
 
 // initialize express
-// Mongoose DB Connection
 
-mongoose.connect('mongodb://nodetojoy:nodetojoy@ds037165.mongolab.com:37165/nodetojoy');
-
-//http is for any network protocal
-
-var server = require('http').createServer(app);
 
 //checking to see if PORT# is defined otherwise use 3000
 
@@ -23,5 +20,6 @@ require('./config/routeconfig.js')(app, express);
   */
   
 app.use(express.static(__dirname +  "/../public"));
+app.use(morgan('dev'));
 
 server.listen(port);

@@ -1,17 +1,17 @@
 angular.module('eventsInfoFactory', [])
 .factory('Eventstored', function($http) {
   //posts events to database
-  var eventData = function(dibEvent) {
+  var postEvent = function(eventObj) {
     return $http({
       method: 'POST',
       url: '/api/events/booked',
-      data: { dibEvent : dibEvent }
+      data: eventObj
     }).then(function(responseObj){
       return responseObj;
     });
   };
 
-  //retrieves events
+  //retrieves events 
   var getData = function() {
     return $http({
       method: 'GET',
@@ -37,7 +37,7 @@ angular.module('eventsInfoFactory', [])
   };
 
   return {
-    eventData : eventData,
+    postEvent : postEvent,
     getData : getData,
     formatData : formatData
   };
