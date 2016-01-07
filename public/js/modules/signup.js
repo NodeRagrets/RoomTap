@@ -1,5 +1,5 @@
 angular.module('userInfo', [])
-  .controller('userSignUp', '$scope', '$window', '$state', 'SignUpFactory', function($scope, $window, $state, SignUpFactory) {
+  .controller('userSignUp', ['$scope', '$window', '$state', 'SignUpFactory', function($scope, $window, $state, SignUpFactory) {
     $scope.user = {};
     $scope.user.username = '';
     $scope.user.email = '';
@@ -25,4 +25,4 @@ angular.module('userInfo', [])
     $scope.loginPage = function() {
       $state.go('loginupPage');
     };
-});
+}]);
