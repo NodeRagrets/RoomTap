@@ -1,6 +1,6 @@
 //parent module
 // inject children modules for access
-angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder'])
+angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder', 'houseFactory'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise('signup');
     $httpProvider.interceptors.push('AttachToken');
@@ -68,11 +68,82 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
     };
   })
 
-  .run(function($state, $rootScope, SignUpFactory) {
+  .factory('facebookAuth', ['$rootScope', function($rootScope){
+    var getUserInfo = function(){
+      var _self = this;
+
+      FB.api('/me', function(res){
+
+        $rootScope.$apply(function(){
+          $rootScope.user = _self.user = res;
+        })
+
+      })
+
+    }
+  
+    var checkLoginStatus = function(){
+          var _self = this;
+          FB.Event.subscribe('auth.authResponseChange', function(res){
+
+            if(res.status === 'connected'){
+              getUserInfo();
+            } else {
+
+
+            }
+
+          })
+        }
+
+
+
+  return {
+    'getUserInfo': getUserInfo,
+    'checkLoginStatus': checkLoginStatus
+  };
+
+  }])
+
+  .run(['$state', '$rootScope', 'SignUpFactory', '$window', 'facebookAuth', function($state, $rootScope, SignUpFactory, $window, facebookAuth) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
       if(toState.data.authenticate === true && !SignUpFactory.validToken) {
         $state.go('signupPage');
         event.preventDefault();
       }
     });
-  });
+
+    $rootScope.user = {};
+
+    (function(d){
+      var js;
+      var id = 'facebook-jssdk';
+      var ref = d.getElementsByTagName('script')[0];
+      if(d.getElementById(id)) {
+        return;
+      }
+
+      js = d.createElement('script');
+      js.id = id;
+      js.async = true;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+
+      ref.parentNode.insertBefore(js, ref);
+    })(document)
+
+    $window.fbAsyncInit = function(){
+      //executes when SDK loads
+      FB.init({
+        appId: '1513513728979196',
+        channelUrl: '/channel.html',
+        status: true,
+        cookie: true,
+        xfbml: true,
+        version: 'v2.5'
+      })
+
+      facebookAuth.checkLoginStatus();
+
+    }
+
+}]);
