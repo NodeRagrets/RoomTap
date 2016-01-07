@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var morgan = require('morgan');
 
 
 // initialize express
@@ -19,5 +20,6 @@ require('./config/routeconfig.js')(app, express);
   */
   
 app.use(express.static(__dirname +  "/../public"));
+app.use(morgan('dev'));
 
 server.listen(port);
