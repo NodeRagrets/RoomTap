@@ -6,26 +6,36 @@ var smtpTransport = require('nodemailer-smtp-transport');
 
 module.exports = {
   postEvent: function(req,res) {
-    //checks if event already exists
+    //NOTE: we'll need to 
+
     var eventObj = { // got it!
-      name: '', 
-      description: '',
-      date: '', 
-      duration: ''
+      name: req.body.data.eventName, 
+      description: req.body.data.eventDescription,
+      date: req.body.data.eventDate, 
+      duration: req.body.data.eventDuration
     };
 
     var userObj = {
-      username: '', //jwt
+      username: '' //jwt
     };
 
-    //query DB for username
     var homeObj = {
       address: ''
     };
 
-    //req.body.data.roomNames
-    //
-    var roomArray = []; //full of objects
+    //query user table in DB for username to get HomeId
+    helpers.getUser(userObj)
+      .then(function(user) {
+        homeObj.address = user.get('HomeId');
+      });
+    //pass all completed objects to addEvent
+    helpers.getRooms(homeObj)
+      .then(function(roomsArray) {
+        console.log(roomsArray);
+        //NOTE: need to console log roomsArray to know what's on it, to filter for the roomnames that came in on req.body.data.roomNames
+        helpers.addEvent(eventObj, userObj, homeObj, roomsArray);
+      });
+
     
 
     helpers.getRooms()
