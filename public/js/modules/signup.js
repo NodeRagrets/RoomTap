@@ -3,7 +3,7 @@ angular.module('userInfo', [])
     $scope.user = {};
     $scope.user.username = '';
     $scope.user.email = '';
-    $scope.user.password = '';
+    $scope.user.password = ''; 
 
     $scope.signUp = function() {
       if($scope.user.username === '') {
@@ -16,8 +16,9 @@ angular.module('userInfo', [])
         $state.go('dashboardPage');
         SignUpFactory.signUpData($scope.user)
           .then(function(token) {
+            console.log("HERE IS TOKEN", token);
             $window.localStorage
-            .setItem('dibsToken', token.data);
+            .setItem('dibsToken', token.data.token);
           });
       }
     },

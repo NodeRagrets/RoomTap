@@ -1,5 +1,5 @@
 angular.module('loginInfo', [])
-  .controller('userLogin', function($scope, $window, $state, LoginFactory) {
+  .controller('userLogin', ['$scope', '$window', '$state', 'LoginFactory', function($scope, $window, $state, LoginFactory) {
     $scope.loginUser = {};
     $scope.loginUser.username = '';
     $scope.loginUser.password = '';
@@ -13,6 +13,8 @@ angular.module('loginInfo', [])
         LoginFactory.userLoginIn($scope.loginUser)
           .then(function(finalResult) {
             if(finalResult.data.result){
+              $window.localStorage
+                .setItem('dibsToken', token.data.token);
               $state.go('dashboardPage'); 
             } else {
               alert("Incorrect Username or Password");              
@@ -20,4 +22,4 @@ angular.module('loginInfo', [])
           });
       }
     };
-})
+}])
