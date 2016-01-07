@@ -103,7 +103,7 @@ var helpers = {
 
   addUserToHome: function(user, home) {
   
-    var houseId;
+    var house;
 
     return db.Homes.findOne({
       where: {address: home.address}
@@ -112,7 +112,7 @@ var helpers = {
       if(!homeRes) {
         throw Error('Home not found!');
       }
-      houseId = homeRes.id;
+      house = homeRes;
       return db.Users.findOne({
         where: {username: user.username}
       })
@@ -120,7 +120,7 @@ var helpers = {
         if(!userRes) {
           throw Error('User not found!');
         }
-        return userRes.set('HomeId', houseId).save();
+        userRes.addHome(house);
       });
     })
     .catch(function(error) {
@@ -256,20 +256,29 @@ var helpers = {
     .catch(function(error) {
       console.log('Error retrieving housemate emails: ', error);
     });
+  },
+
+  getUserHomes: function(user){
+    return helpers.getUser(user)
+    .then(function(userRes){
+      return userRes.getHomes();
+    })
   }
+
+
 }
 
 /* FUNCTION TESTS */
 
 // helpers.addUser({
-//   username: 'Tom',
+//   username: 'Thor',
 //   password: 'AAAAA',
 //   email: 'tom@tom.com'
 // });
 
 // helpers.addHome({
 //   name: 'HOUSE',
-//   address: '153 House Street'
+//   address: '154 House Street'
 // });
 
 // helpers.addRoom({
@@ -285,7 +294,7 @@ var helpers = {
 //   username: 'Tom'
 // },
 // {
-//   address: '153 House Street'
+//   address: '154 House Street'
 // });
 
 // helpers.getRooms({
@@ -314,11 +323,11 @@ var helpers = {
 //   console.log(result.get('address'));
 // })
 
-// helpers.getUser({
+// helpers.getUserHomes({
 //   username: 'Tom'
 // })
 // .then(function(result) {
-//   console.log(result.get('username'));
+//   console.log(result);
 // })
 
 // helpers.getHousemateEmails({
