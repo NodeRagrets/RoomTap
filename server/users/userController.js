@@ -1,56 +1,62 @@
 var jwt = require('jwt-simple');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
+var helpers = require('./../db/helpers.js');
+var utils = require('./../utility/utility.js');
 
 module.exports = {
   signup: function(req, res) {
     var newUser = req.body.userData;
-    var storeUser = userModel.create.bind(userModel);
-    //Since all mongoose functions are promises,
-    //we need to set the this context of promise function.
-    //creating promise to create new user
-
-    var check = userModel.findOne.bind(userModel);
-    //creating promise to check if user exists
-    //only looking for this schema in the database
-
-    check({ 'username' : req.body.userData.username })
-      .then(function(user) {
-        if(user){ 
-          throw new Error('User Exists');
-        } else {
-          bcrypt.hash(newUser.password, null, null, function(error, hash) {
-            newUser.password = hash;
-            return storeUser(newUser);
-          })
+    
+    bcrypt.genSalt(10, function(error, salt) {
+      if(error) {
+        return res.status(401).send(error)
+      }
+      bcrypt.hash(newUser.password, null, null, function(error, hash) {
+        if(error) {
+          throw error;
         }
-      })
-      .then(function(createdUser) {
-        var token = jwt.encode(createdUser, 'WILDCARD');
-        res.status(200).send(token);
+        newUser.password = hash;
+        helpers.addUser(newUser)
+          .then(function(newUser) {
+            return res.status(200).json({user: newUser, token: utils.issueToken({username: newUser.get('username')})});
+        })
+        .catch(function(error) {
+          return res.status(401).send(error);
+        })
       });
+    });
   },
 
-  login: function(req, res) {
-    var user = req.body.loginData;
-    var check = userModel.findOne.bind(userModel);
 
-    check({ 'username': req.body.loginData.username})
-      .then(function(result) {
-        if(result){
-          bcrypt.compare(user.password, result.password, function(error, isMatch) {
+  login: function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    if(!username || !password) {
+      return res.status(401).send('Please enter your username and your password.');
+    }
+
+    helpers.getUser(user)
+      .then(function(resUser) {
+        console.log("USER INFORMATION", resUser.get('username'));
+          bcrypt.compare(password, resUser.password, function(error, isMatch) {
             if(isMatch) {
-              return res.json({ result: true });
+              return res.status(200).json({ user: resUser, token: utils.issueToken({username:resUser.get('username')})});
             }
-            res.status(401).send({result:false});
-          })
-          //Users exists and password matches
-            //pass them through. 
-        } else {
-          return res.json({ result: false });
-          //Users info doesn't match
-            //keep them on page.
-      }
-    });
+            if(error) {
+              return res.status(401).send(error);
+            }
+          });
+        })
+      .catch(function(error) {
+        return res.status(401).send(error);
+      })
   }
 };
+
+
+
+
+
+

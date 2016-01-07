@@ -1,11 +1,16 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', '$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
+    $scope.eve.eventName = ''; //added this to accomodate  helper.addEvent input needs
     $scope.eve.eventDescription = '';
     $scope.eve.eventTime = '';
     $scope.eve.roomNames = [];
+    $scope.eve.eventDuration;
+    $scope.eve.roomName = '';
+    $scope.eve.eventAlert = '';
+    $scope.eve.houseName = 'Hacker House';
 
     $scope.refreshEvents = function() {
       $interval(function(){
@@ -163,4 +168,4 @@ angular.module('eventsInfo', [])
       }
       return '';
     };
-  });
+  }]);
