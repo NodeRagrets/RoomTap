@@ -17,9 +17,6 @@ models.Users = sequelize.define('User', {
   },
   email: {
     type: Sequelize.STRING
-  },
-  facebookCode: {
-    type: Sequelize.STRING
   }
 });
 
@@ -58,18 +55,13 @@ models.Homes = sequelize.define('Homes', {
 
 models.RoomEventsJoin = sequelize.define('RoomEventsJoin', {});
 
-models.HomesUsersJoin = sequelize.define('HomesUsersJoin', {});
-
-
+models.Homes.hasMany(models.Users);
 models.Homes.hasMany(models.Rooms);
 models.Homes.hasMany(models.Events);
 models.Users.hasMany(models.Events);
 
 models.Events.belongsToMany(models.Rooms, {through: 'RoomEventsJoin'});
 models.Rooms.belongsToMany(models.Events, {through: 'RoomEventsJoin'});
-
-models.Users.belongsToMany(models.Homes, {through: 'HomesUsersJoin'});
-models.Homes.belongsToMany(models.Users, {through: 'HomesUsersJoin'});
 
 models.Users.sync({force: false}).then(function() {
   // return models.Users.create({
@@ -106,10 +98,6 @@ models.Events.sync({force: false}).then(function() {
 });
 
 models.RoomEventsJoin.sync({force: false}).then(function() {
-
-});
-
-models.HomesUsersJoin.sync({force: false}).then(function() {
 
 });
 
