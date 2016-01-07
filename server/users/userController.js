@@ -5,6 +5,28 @@ var helpers = require('./../db/helpers.js');
 var utils = require('./../utility/utility.js');
 
 module.exports = {
+
+  facebookAuth: function(req, res){
+
+    var username = req.body.name + '&%&' + req.body.id;
+    console.log(req.body, username);
+    helpers.getUser({'username': username})
+    .then(function(oldUserRes){
+      if(!oldUserRes){
+        var newUser = {};
+        newUser.username = username;
+        newUser.email = req.body.email || null;
+        helpers.addUser(newUser)
+        .then(function(newUserRes){
+          return res.status(200).json({user: newUserRes, token: utils.issueToken({username: newUserRes.get('username')})});
+        });
+      } else {
+        return res.status(200).json({ user: oldUserRes, token: utils.issueToken({username: oldUserRes.get('username')})});
+      }
+    })
+
+  },
+
   signup: function(req, res) {
     var newUser = req.body.userData;
     

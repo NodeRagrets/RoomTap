@@ -60,7 +60,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
       request : function(http) {
         var token = $window.localStorage.getItem('dibsToken');
         if(token) {
-        http.headers["x-access-token"] = token;
+        http.headers["authorization"] = token;
         }
         http.headers["Allow-Control-Allow-Origin"] = "*";
         return http;
@@ -68,14 +68,22 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
     };
   })
 
-  .factory('facebookAuth', ['$rootScope', function($rootScope){
+  .factory('facebookAuth', ['$rootScope', '$http', '$window', function($rootScope, $http, $window){
     var getUserInfo = function(){
       var _self = this;
 
-      FB.api('/me', function(res){
+      FB.api('/me', {fields: 'name, email'}, function(res){
 
         $rootScope.$apply(function(){
-          $rootScope.user = _self.user = res;
+          $rootScope.user = res;
+          $http({
+                method: 'POST',
+                url: '/api/users/facebookAuth',
+                data: $rootScope.user
+              })
+          .then(function(res){
+            $window.localStorage.setItem('dibsToken', res.data.token);
+          });
         })
 
       })
@@ -88,19 +96,32 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
 
             if(res.status === 'connected'){
               getUserInfo();
+
             } else {
 
 
             }
 
           })
-        }
+    }
 
+    var facebookLogout = function(){
+
+      FB.logout(function(res){
+
+        $rootScope.$apply(function(){
+          $rootScope.user = {};
+        })
+
+      });
+
+    }
 
 
   return {
     'getUserInfo': getUserInfo,
-    'checkLoginStatus': checkLoginStatus
+    'checkLoginStatus': checkLoginStatus,
+    'facebookLogout': facebookLogout
   };
 
   }])
