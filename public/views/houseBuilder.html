@@ -2,12 +2,19 @@
 
 <div ng-controller='houseBldr'>
   <div>
-    <a href='/#/dashboard'>Book a room </a>
+    <a href='/#/dashboard'>Reserve a room </a>
   </div>
   <h2>House Builder</h2>
-  <h4>What rooms are in your house?</h4>
-  <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' novalidate>
-    <input placeholder= 'Room Name' type= 'text' name= 'roomName' ng-model= 'data.roomName'>
+
+  <h4>What is your address? <h4>
+  <form ng-submit= 'addAddress()' name = 'addresForm' novalidate>
+    <input placeholder='Address' type = 'text' name= 'address' ng-model='data.address' required></input>
+    <input type = 'submit' value = 'Add Address'></input>
+  </form>
+
+  <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' ng-if = 'addedHouse === true'novalidate>
+    <h4>What rooms are in your house?</h4>
+    <input placeholder= 'Room Name' type= 'text' name= 'roomName' ng-model= 'data.roomName'required>
       <select placeholder='Type of Room'  ng-model='data.roomType' required>
         <option value='' disabled selected>Select room type</option>
         <option>Kitchen</option>
@@ -20,10 +27,8 @@
       </select>
     <input type= 'submit' value= 'Add Room'>
   </form>
-  <!-- should have an input for calling the room a name and then a drop down on what type of room it is -->
-
-  <h5>Rooms in your house:</h5>
-  <div ng-repeat='room in house'>
+  <h5 ng-if = 'addedHouse === true'>Rooms in your house:</h5>
+  <div ng-repeat='room in data.viewArray'>
     <p>{{room}}</p>
   </div>
 

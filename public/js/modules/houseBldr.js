@@ -1,21 +1,49 @@
 angular.module('houseBuilder', [])
-    .controller('houseBldr', '$scope', 'House', function($scope, House){
+    .controller('houseBldr', ['$scope', 'House', function($scope, House){
         $scope.data = {};
         $scope.data['roomName'] = '';
         $scope.data['roomType'] = '';
-        $scope.data['house'] = [];
+        $scope.data['roomArray'] = [];
+        $scope.data['roomObject'] = {};
+        $scope.data['viewArray'] = [];
+        $scope.data['address'] = '';
+        $scope.addedHouse = false;
+        $scope.addedRoom = false;
 
+
+        $scope.addAddress = function(){
+          if($scope.data.address){
+            var home = $scope.data.address;
+            //permanently store the text in $scope.data
+            House.addHouse($scope.data);
+            $scope.addedHouse = true;
+
+          } else{
+            alert('You must add an address');
+          }
+        }
         $scope.addRoomToHouse = function(){
           if($scope.data.roomName && $scope.data.roomType){
-            console.log($scope.data.roomName, "ROOMNAME");
-            console.log($scope.data.roomType, "ROOMTYPE");
             var name = $scope.data.roomName;
-            var array = $scope.data.house;
-            array.push(name);
+            var array = $scope.data.roomArray;
+            var type = $scope.data.roomType;
+            var object = $scope.data.roomObject;
+            var view = $scope.data.viewArray;
+
+            view.push(name);
+
+            object['name'] = name;
+            object['type'] = type;
+
+            array.push(object);
+
              House.addRooms($scope.data)
+             $scope.addedRoom = true;
           } else{
             alert('You must fill out input fields');
           }
         }
 
-    })
+    }])
+    // room is an object with two keys: type, name
+    // home is an object with one key: address
