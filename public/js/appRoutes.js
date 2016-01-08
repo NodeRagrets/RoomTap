@@ -61,7 +61,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
             templateUrl : 'views/houseBuilder.html'
           }
         },
-        data : {authenticate: true}
+        data : { authenticate: true } //false
       })
     })
 
