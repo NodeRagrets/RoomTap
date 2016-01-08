@@ -10,6 +10,7 @@ angular.module('houseBuilder', [])
         $scope.data['users'] = '';
         // $scope.data['home']={}
         // $scope.data['id'];
+        $scope.data['homeName'] = ''
 
 
         $scope.addedHouse = false;
