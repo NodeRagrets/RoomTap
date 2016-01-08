@@ -51,6 +51,7 @@ angular.module('eventsInfo', [])
         var formattedEvents = Eventstored.formatData(events);
         $scope.bookedEvents = formattedEvents;
       });
+    };
 
     $scope.highlightEvents = function(event) {
     console.log('test', event.diff);
@@ -153,7 +154,7 @@ angular.module('eventsInfo', [])
           date: afterTomorrow,
           status: 'partially'
         }
-      ];
+    ];
 
     $scope.getDayClass = function(date, mode) {
       if (mode === 'day') {
