@@ -30,5 +30,8 @@ module.exports = {
                res.sendStatus(404);
              })
     }
+  },
+  users: function(req, res){
+    
   }
 }
