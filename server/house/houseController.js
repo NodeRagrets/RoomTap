@@ -3,9 +3,11 @@ var helpers = require('./../db/helpers.js');
 
 module.exports = {
   address: function(req, res){
+    var homeName = req.body.homeName;
     var address = req.body.address;
     var houseData = {};
     houseData['address'] = address;
+    houseData['name'] = homeName;
     helpers.addHome(houseData)
            .then( function(result){
              console.log('SUCCESS INSIDE ADDRESS');
@@ -32,6 +34,18 @@ module.exports = {
     }
   },
   users: function(req, res){
-    
+
+  },
+  retrieveHome: function(req, res){
+    console.log(req.body, "RETRIEVEHOME REQBODY");
+    helpers.getHome(req.body)
+           .then(function(resultData){
+             console.log('SUCCESS INSIDE RETRIEVEHOME');
+             res.status(200).send(resultData);
+           })
+           .catch(function(err){
+             console.log('ERROR INSIDE BUILD');
+             res.sendStatus(404);
+           })
   }
 }
