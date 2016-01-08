@@ -142,8 +142,13 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
 
   .run(['$state', '$rootScope', 'SignUpFactory', '$window', 'facebookAuth', function($state, $rootScope, SignUpFactory, $window, facebookAuth) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
-      if(toState.data.authenticate === true && !SignUpFactory.validToken) {
+      if(toState.data.authenticate === true && SignUpFactory.validToken) {
         $state.go('signupPage');
+        event.preventDefault();
+      }
+
+      if(toState.data.authenticate === false && SignUpFactory.validToken) {
+        $state.go('dashboardPage');
         event.preventDefault();
       }
     });
