@@ -33,6 +33,10 @@
     <p>{{room}}</p>
   </div>
 
+  <form ng-submit = 'nextStep()' name= 'next' ng-if= 'addedRoom === true'>
+    <input type = 'submit' value = 'Continue'>
+  </form>
+
   <!-- TODO: Floors -->
 </div>
 <div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
