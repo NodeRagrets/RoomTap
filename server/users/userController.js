@@ -70,7 +70,13 @@ module.exports = {
         console.log("USER INFORMATION", resUser.get('username'));
           bcrypt.compare(password, resUser.password, function(error, isMatch) {
             if(isMatch) {
-              return res.status(200).json({ user: resUser, token: utils.issueToken({username: resUser.get('username')})});
+              if(resUser.get('homeId')) {
+                var userHasHome = true
+              } else {
+                userHasHome = false;
+              } 
+                ;
+              return res.status(200).json({ user: resUser, token: utils.issueToken({username: resUser.get('username'), hasHomeOnLogin: userHasHome})});
             }
             if(error) {
               return res.status(401).send(error);
