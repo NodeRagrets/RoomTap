@@ -1,6 +1,6 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', '$window', function($scope, $state, Eventstored, moment, $interval, $window) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventName = ''; //added this to accomodate  helper.addEvent input needs
@@ -12,26 +12,26 @@ angular.module('eventsInfo', [])
     $scope.eve.eventAlert = '';
     $scope.eve.houseName = 'Hacker House';
 
-    $scope.refreshEvents = function() {
-      $interval(function(){
-        Eventstored.getData().then(function(events) {
+    // $scope.refreshEvents = function() {
+    //   $interval(function(){
+    //     Eventstored.getData().then(function(events) {
 
-          var allEvents = events.data;
-          console.log(allEvents);
-          var today = moment().dayOfYear();
+    //       var allEvents = events.data;
+    //       console.log(allEvents);
+    //       var today = moment().dayOfYear();
 
-          for (var i = 0; i < allEvents.length; i++) {
-            var eachDib = moment(allEvents[i].eventDate).dayOfYear();
-            var diff = eachDib - today;
-            allEvents[i].diff = diff;
-            console.log('This is the flag', diff);
-          }
-          var formattedEvents = Eventstored.formatData(events);
-          console.log("HERE IS FORMATTED EVENTS", formattedEvents);
-          $scope.bookedEvents = formattedEvents;
-        });
-      }, 500);
-    };
+    //       for (var i = 0; i < allEvents.length; i++) {
+    //         var eachDib = moment(allEvents[i].eventDate).dayOfYear();
+    //         var diff = eachDib - today;
+    //         allEvents[i].diff = diff;
+    //         console.log('This is the flag', diff);
+    //       }
+    //       var formattedEvents = Eventstored.formatData(events);
+    //       console.log("HERE IS FORMATTED EVENTS", formattedEvents);
+    //       $scope.bookedEvents = formattedEvents;
+    //     });
+    //   }, 500);
+    // };
 
     $scope.renderSideDashboard = function() {
       $state.go('dashboardPage.events');
@@ -51,7 +51,7 @@ angular.module('eventsInfo', [])
       });
 
       // removing past daily dibs every 30s
-      $scope.refreshEvents();
+      // $scope.refreshEvents(); 
     };
 
     $scope.highlightEvents = function(event) {
@@ -68,6 +68,7 @@ angular.module('eventsInfo', [])
 
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
+      $events.homeID = $window.localStorage.getItem('homeID');
       Eventstored.postEvent($events)
       .then(function(response) {
         if(!response.data.result) {

@@ -29,7 +29,8 @@ module.exports = {
 
   signup: function(req, res) {
     var newUser = req.body.userData;
-    
+    console.log("HERE IS REQ.BODY.USERDATA", req.body.userData);
+
     bcrypt.genSalt(10, function(error, salt) {
       if(error) {
         return res.status(401).send(error)
@@ -49,13 +50,13 @@ module.exports = {
       });
     });
   },
-
+ 
 
   login: function(req, res) {
     var user = req.body.loginData;
     var password = req.body.loginData.password;
 
-    if(!username || !password) {
+    if(!user.username || !password) {
       return res.status(401).send('Please enter your username and your password.');
     }
 
@@ -64,12 +65,12 @@ module.exports = {
         console.log("USER INFORMATION", resUser.get('username'));
           bcrypt.compare(password, resUser.password, function(error, isMatch) {
             if(isMatch) {
-              return res.status(200).json({ user: resUser, token: utils.issueToken({username:resUser.get('username')})});
+              return res.status(200).json({ user: resUser, token: utils.issueToken({username: resUser.get('username')})});
             }
             if(error) {
               return res.status(401).send(error);
             }
-          });
+          }); 
         })
       .catch(function(error) {
         return res.status(401).send(error);

@@ -5,18 +5,19 @@ angular.module('userloginFactory', [])
       method: 'POST',
       url: '/api/users/login',
       data: { loginData: loginData }
-    })
-    .then(function(val) {
-      return val;
+    }) //changed below var to token from val
+    .then(function(token) {
+      return token;
     });
   };
 
-  // var authenticationChecker = function() {
-  //   return !!$window.localStorage.getItem('dibsToken');
-  // };
+  var authenticationChecker = function() { 
+    return !!$window.localStorage.getItem('dibsToken');
+  };
 
   return {
     userLoginIn : userLoginIn,
-    // validToken: authenticationChecker 
+    validToken: authenticationChecker 
   };
 });
+ 
