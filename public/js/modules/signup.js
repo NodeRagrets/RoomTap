@@ -16,7 +16,6 @@ angular.module('userInfo', [])
         // $state.go('dashboardPage');
         SignUpFactory.signUpData($scope.user)
           .then(function(token) {
-            console.log("HERE IS TOKEN", token);
             $window.localStorage
             .setItem('dibsToken', token.data.token); //moved this here - it used to be above $window.localStorage
             $state.go('dashboardPage');
@@ -30,10 +29,12 @@ angular.module('userInfo', [])
 }])
 
 .controller('FBuserSignUp', ['$scope', '$window', '$state', 'SignUpFactory', '$rootScope', '$http', function($scope, $window, $state, SignUpFactory, $rootScope, $http) {
+          console.log($rootScope.user);
     $scope.user = {};
     $scope.user.username = '';
     $scope.user.email = '';
     $scope.user.facebookCode = $rootScope.user.id;
+    
 
     $scope.signUp = function() {
       if($scope.user.username === '') {
@@ -49,6 +50,7 @@ angular.module('userInfo', [])
         })
         .then(function(res){
               $window.localStorage.setItem('dibsToken', res.data.token);
+              $state.go('dashboardPage');
         })
       }
     },
