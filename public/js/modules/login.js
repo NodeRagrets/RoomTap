@@ -10,6 +10,7 @@ angular.module('loginInfo', [])
       } else if($scope.loginUser.password === '') {
         alert("Must Enter Password");
       } else {
+        $window.localStorage.setItem('username', $scope.loginUser.username);
         LoginFactory.userLoginIn($scope.loginUser)
           .then(function(token) {
             if(token.data.token){
