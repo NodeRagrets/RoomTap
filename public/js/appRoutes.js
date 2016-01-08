@@ -55,13 +55,13 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
         data : { authenticate: false }
       })
       .state('houseBuilder', {
-        url : '/houseBuilder',
+        url : '/housebuilder',
         views: {
           'indexPage' : {
             templateUrl : 'views/houseBuilder.html'
           }
         },
-        data : {authenticate: false}
+        data : {authenticate: true}
       })
     })
 
@@ -149,44 +149,6 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
   .run(['$state', '$rootScope', 'SignUpFactory', '$window', 'facebookAuth', function($state, $rootScope, SignUpFactory, $window, facebookAuth) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
 
-     //  if(!SignUpFactory.validToken() && toState.data.access) {
-     //   event.preventDefault();
-     //   $state.go('signupPage');
-     //   return;
-     // }
-
-     // if(SignUpFactory.validToken() && !toState.data.access) {
-     //   event.preventDefault();
-     //   $state.go('user.dashboard.groupcreate');
-     //   return;
-     // }
-
-      if(toState.data.authenticate === true && !SignUpFactory.validToken()) {
-       if(toState.name === "signupPage") {
-         return;
-       }
-        event.preventDefault();
-        $state.go('signupPage');
-        $window.fbAsyncInit();
-        
-        return;
-      }
-
-      if(toState.data.authenticate === false && SignUpFactory.validToken()) {
-        event.preventDefault();
-        $state.go('dashboardPage');
-        $window.fbAsyncInit();
-        
-      }
-
-      if(toState.name === 'loginupPage') {
-        $window.fbAsyncInit();
-        
-
-      }
-
-      // $rootScope.user = {};
-
       (function(d){
         var js;
         var id = 'facebook-jssdk';
@@ -217,6 +179,31 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
         facebookAuth.checkLoginStatus();
 
       }
+
+      if(toState.data.authenticate === true && !SignUpFactory.validToken()) {
+       if(toState.name === "signupPage") {
+         return;
+       }
+        event.preventDefault();
+        $state.go('signupPage');
+        $window.fbAsyncInit();
+        
+        return;
+      }
+
+      if(toState.data.authenticate === false && SignUpFactory.validToken()) {
+        event.preventDefault();
+        $state.go('dashboardPage');
+        $window.fbAsyncInit();
+        
+      }
+
+      if(toState.name === 'loginupPage') {
+        $window.fbAsyncInit();
+        
+
+      }
+
     });
 
 }]);
