@@ -33,6 +33,12 @@
     <p>{{room}}</p>
   </div>
 
+  <form ng-submit='addedUsers()' name= 'userForm' ng-if = 'addedHouse === true'>
+    <h4>Who's in your house?</h4>
+    <input placeholder="Roomies" type='text' name='user'></input>
+    <input type='submit' value="Tap 'em"></input>
+    <p> please separate roomies with a comma</p>
+  </form>
   <form ng-submit = 'nextStep()' name= 'next' ng-if= 'addedRoom === true'>
     <input type = 'submit' value = 'Continue'>
   </form>

@@ -1,5 +1,5 @@
 angular.module('houseBuilder', [])
-    .controller('houseBldr', ['$scope', 'House', '$window', function($scope, House, $window){
+    .controller('houseBldr', ['$scope', 'House', '$window', '$state', function($scope, House, $window, $state){
         $scope.data = {};
         $scope.data['roomName'] = '';
         $scope.data['roomType'] = '';
@@ -68,6 +68,7 @@ angular.module('houseBuilder', [])
               console.log("JESHSEJKR", result.id)
                $window.localStorage.setItem('homeID', result.id);
               //  console.log($window.localstorage)
+              $state.go('dashboardPage.events');
             })
             .catch(function(err){
               console.log("EROROROROROROROROR")
