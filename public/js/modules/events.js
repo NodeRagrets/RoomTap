@@ -35,7 +35,6 @@ angular.module('eventsInfo', [])
     //   }, 500);
     // };
 
-<<<<<<< HEAD
     $scope.renderSideDashboard = function() {
       $state.go('dashboardPage.events');
       Eventstored.getData().then(function(events) {
