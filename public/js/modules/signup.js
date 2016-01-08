@@ -18,7 +18,7 @@ angular.module('userInfo', [])
           .then(function(token) {
             $window.localStorage
             .setItem('dibsToken', token.data.token); //moved this here - it used to be above $window.localStorage
-            $state.go('dashboardPage');
+            $state.go('houseBuilder');
           });
       }
     },
