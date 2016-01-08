@@ -1,6 +1,6 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', '$window', 'Socket', function($scope, $state, Eventstored, moment, $interval, $window, Socket) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventName = ''; //added this to accomodate  helper.addEvent input needs
@@ -11,33 +11,35 @@ angular.module('eventsInfo', [])
     $scope.eve.roomName = '';
     $scope.eve.eventAlert = '';
     $scope.eve.houseName = 'Hacker House';
-
-    $scope.refreshEvents = function() {
-      $interval(function(){
-        Eventstored.getData().then(function(events) {
-
-          var allEvents = events.data;
-          console.log(allEvents);
-          var today = moment().dayOfYear();
-
-          for (var i = 0; i < allEvents.length; i++) {
-            var eachDib = moment(allEvents[i].eventDate).dayOfYear();
-            var diff = eachDib - today;
-            allEvents[i].diff = diff;
-            console.log('This is the flag', diff);
-          }
-          var formattedEvents = Eventstored.formatData(events);
-          console.log("HERE IS FORMATTED EVENTS", formattedEvents);
-          $scope.bookedEvents = formattedEvents;
-        });
-      }, 500);
+    $scope.house = {
+      address: ''
     };
+    // $scope.refreshEvents = function() { 
+    //   $interval(function(){ 
+    //     Eventstored.getData().then(function(events) {
+
+    //       var allEvents = events.data;
+    //       console.log(allEvents);
+    //       var today = moment().dayOfYear();
+
+    //       for (var i = 0; i < allEvents.length; i++) {
+    //         var eachDib = moment(allEvents[i].eventDate).dayOfYear();
+    //         var diff = eachDib - today;
+    //         allEvents[i].diff = diff;
+    //         console.log('This is the flag', diff);
+    //       }
+    //       var formattedEvents = Eventstored.formatData(events);
+    //       console.log("HERE IS FORMATTED EVENTS", formattedEvents);
+    //       $scope.bookedEvents = formattedEvents;
+    //     });
+    //   }, 500);
+    // };
 
     $scope.renderSideDashboard = function() {
       $state.go('dashboardPage.events');
       Eventstored.getData().then(function(events) {
           var allEvents = events.data;
-          console.log(allEvents);
+          console.log("HERES ALLEVENTS IN RENDERSIDEDASH", allEvents);
           var today = moment().dayOfYear();
 
           for (var i = 0; i < allEvents.length; i++) {
@@ -49,9 +51,6 @@ angular.module('eventsInfo', [])
         var formattedEvents = Eventstored.formatData(events);
         $scope.bookedEvents = formattedEvents;
       });
-
-      // removing past daily dibs every 30s
-      $scope.refreshEvents();
     };
 
     $scope.highlightEvents = function(event) {
@@ -68,6 +67,7 @@ angular.module('eventsInfo', [])
 
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
+      $events.homeID = $window.localStorage.getItem('homeID');
       Eventstored.postEvent($events)
       .then(function(response) {
         if(!response.data.result) {
@@ -79,6 +79,7 @@ angular.module('eventsInfo', [])
     };
 
     $scope.signout = function() {
+      $window.localStorage.removeItem('dibsToken');
       $state.go('signupPage');
     };
 
@@ -154,7 +155,7 @@ angular.module('eventsInfo', [])
           date: afterTomorrow,
           status: 'partially'
         }
-      ];
+    ];
 
     $scope.getDayClass = function(date, mode) {
       if (mode === 'day') {
@@ -168,4 +169,21 @@ angular.module('eventsInfo', [])
       }
       return '';
     };
+
+    Socket.on('message', function(data) {
+      console.log(data);
+    });
+
+    $scope.setHouse = function() {
+      Socket.emit('load house', $scope.house);
+    }
+
+    Socket.on('received', function(data) {
+      console.log(data.message);
+    });
+
+    $scope.updateEvents = function() {
+      Socket.emit('event update', {house: $scope.house.address, message: 'you are updated'});
+    }
+
   }]);

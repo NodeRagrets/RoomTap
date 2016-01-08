@@ -3,13 +3,15 @@ var helpers = require('./../db/helpers.js');
 
 module.exports = {
   address: function(req, res){
+    var homeName = req.body.homeName;
     var address = req.body.address;
     var houseData = {};
     houseData['address'] = address;
+    houseData['name'] = homeName;
     helpers.addHome(houseData)
            .then( function(result){
              console.log('SUCCESS INSIDE ADDRESS');
-             res.status(200).send(res.body);
+             res.status(200).send(result);
            })
            .catch( function(err){
              console.log('ERROR INSIDE ADDRESS', err);
@@ -23,12 +25,36 @@ module.exports = {
       helpers.addRoom(roomArray[i], houseData)
              .then( function(results){
                console.log('SUCCESS INSIDE BUILD');
-               res.status(200).send(res.body);
+               res.status(200).send(results);
              })
              .catch( function(err){
                console.log('ERROR INSIDE BUILD', err);
                res.sendStatus(404);
              })
     }
+  },
+  users: function(req, res){
+    console.log('USERS REQBODY', req.body);
+
+    helpers.addUserToHome(user,home)
+            .then( function(results){
+
+            })
+            .catch( function(err){
+              console.log('ERROR IN USERS', err);
+            })
+
+  },
+  retrieveHome: function(req, res){
+    console.log(req.body, "RETRIEVEHOME REQBODY");
+    helpers.getHome(req.body)
+           .then(function(resultData){
+             console.log('SUCCESS INSIDE RETRIEVEHOME');
+             res.status(200).send(resultData);
+           })
+           .catch(function(err){
+             console.log('ERROR INSIDE BUILD');
+             res.sendStatus(404);
+           })
   }
 }

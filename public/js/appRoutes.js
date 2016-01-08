@@ -1,6 +1,6 @@
-//parent module
+//parent module 
 // inject children modules for access
-angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder', 'houseFactory'])
+angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder', 'houseFactory', 'socketFactory'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise('signup');
     $httpProvider.interceptors.push('AttachToken');
@@ -14,6 +14,16 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
           'indexPage' : {
             templateUrl : 'views/signup.html',
             controller : 'userSignUp'
+          }
+        },
+        data : { authenticate: false }
+      })
+      .state('facebookSignupPage', {
+        url : '/FBsignup',
+        views: {
+          'indexPage' : {
+            templateUrl : 'views/FBsignup.html',
+            controller : 'FBuserSignUp'
           }
         },
         data : { authenticate: false }
@@ -45,13 +55,13 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
         data : { authenticate: false }
       })
       .state('houseBuilder', {
-        url : '/houseBuilder',
+        url : '/housebuilder',
         views: {
           'indexPage' : {
             templateUrl : 'views/houseBuilder.html'
           }
         },
-        data : {authenticate: false}
+        data : { authenticate: true } //false
       })
     })
 
@@ -68,21 +78,31 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
     };
   })
 
-  .factory('facebookAuth', ['$rootScope', '$http', '$window', function($rootScope, $http, $window){
+  .factory('facebookAuth', ['$rootScope', '$http', '$window', '$state', function($rootScope, $http, $window, $state){
     var getUserInfo = function(){
       var _self = this;
 
       FB.api('/me', {fields: 'name, email'}, function(res){
 
         $rootScope.$apply(function(){
-          $rootScope.user = res;
+          if(res.name && res.id){
+            console.log('gah');
+            $rootScope.user = res;
+          }
+          console.log($rootScope.user);
           $http({
                 method: 'POST',
                 url: '/api/users/facebookAuth',
                 data: $rootScope.user
               })
-          .then(function(res){
-            $window.localStorage.setItem('dibsToken', res.data.token);
+          .then(function(authRes){
+            if(authRes.data.result === false){
+              $state.go('facebookSignupPage');
+            } else {
+              $window.localStorage.setItem('dibsToken', authRes.data.token);
+              $state.go('dashboardPage');
+
+            }
           });
         })
 
@@ -105,66 +125,85 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
           })
     }
 
-    var facebookLogout = function(){
+    // var facebookLogout = function(){
 
-      FB.logout(function(res){
+    //   FB.logout(function(res){
 
-        $rootScope.$apply(function(){
-          $rootScope.user = {};
-        })
+    //     $rootScope.$apply(function(){
+    //       $rootScope.user = {};
+    //     })
 
-      });
+    //   });
 
-    }
+    // }
 
 
   return {
     'getUserInfo': getUserInfo,
-    'checkLoginStatus': checkLoginStatus,
-    'facebookLogout': facebookLogout
+    'checkLoginStatus': checkLoginStatus
+    // 'facebookLogout': facebookLogout
   };
 
   }])
 
   .run(['$state', '$rootScope', 'SignUpFactory', '$window', 'facebookAuth', function($state, $rootScope, SignUpFactory, $window, facebookAuth) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
-      if(toState.data.authenticate === true && !SignUpFactory.validToken) {
-        $state.go('signupPage');
-        event.preventDefault();
+
+      (function(d){
+        var js;
+        var id = 'facebook-jssdk';
+        var ref = d.getElementsByTagName('script')[0];
+        if(d.getElementById(id)) {
+          return;
+        }
+
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+
+        ref.parentNode.insertBefore(js, ref);
+      })(document)
+
+      $window.fbAsyncInit = function(){
+        //executes when SDK loads
+        FB.init({
+          appId: '1513513728979196',
+          channelUrl: '/channel.html',
+          status: true,
+          cookie: true,
+          xfbml: true,
+          version: 'v2.5'
+        })
+
+        facebookAuth.checkLoginStatus();
+
       }
-    });
 
-    $rootScope.user = {};
-
-    (function(d){
-      var js;
-      var id = 'facebook-jssdk';
-      var ref = d.getElementsByTagName('script')[0];
-      if(d.getElementById(id)) {
+      if(toState.data.authenticate === true && !SignUpFactory.validToken()) {
+       if(toState.name === "signupPage") {
+         return;
+       }
+        event.preventDefault();
+        $state.go('signupPage');
+        $window.fbAsyncInit();
+        
         return;
       }
 
-      js = d.createElement('script');
-      js.id = id;
-      js.async = true;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
+      if(toState.data.authenticate === false && SignUpFactory.validToken()) {
+        event.preventDefault();
+        $state.go('dashboardPage');
+        $window.fbAsyncInit();
+        
+      }
 
-      ref.parentNode.insertBefore(js, ref);
-    })(document)
+      if(toState.name === 'loginupPage') {
+        $window.fbAsyncInit();
+        
 
-    $window.fbAsyncInit = function(){
-      //executes when SDK loads
-      FB.init({
-        appId: '1513513728979196',
-        channelUrl: '/channel.html',
-        status: true,
-        cookie: true,
-        xfbml: true,
-        version: 'v2.5'
-      })
+      }
 
-      facebookAuth.checkLoginStatus();
-
-    }
+    });
 
 }]);

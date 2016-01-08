@@ -11,7 +11,7 @@ angular.module('eventsInfoFactory', [])
     });
   };
 
-  //retrieves events 
+  //retrieves events  
   var getData = function() {
     return $http({
       method: 'GET',
@@ -20,12 +20,12 @@ angular.module('eventsInfoFactory', [])
   };
 
   var formatData = function(events) {
-    var eventsCollection = events.data,
-      eventDates,
-      formattedDate,
-      eventTimes;
-
-    eventsCollection.forEach(function(event) {
+    var eventsCollection = events.data;
+    var eventDates;
+    var formattedDate;
+    var eventTimes;
+    //note, changed below to accommodate "arraylike obj" returned from DB
+    [].forEach.call(eventsCollection, function(event) {
       eventDates = event.eventDate;
       formattedDate = moment(eventDates).format("dddd, MMMM Do YYYY");
       formattedTime = moment(eventDates).format('h:mmA');

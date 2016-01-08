@@ -6,10 +6,11 @@
   </div>
   <h2>House Builder</h2>
 
-  <h4>What is your address? <h4>
+  <h4>Create Your home <h4>
   <form ng-submit= 'addAddress()' name = 'addresForm' novalidate>
+    <input placeholder="Home Name" type = 'text' name='name' ng-model= 'data.homeName' required></input>
     <input placeholder='Address' type = 'text' name= 'address' ng-model='data.address' required></input>
-    <input type = 'submit' value = 'Add Address'></input>
+    <input type = 'submit' value = "Let's Build"></input>
   </form>
 
   <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' ng-if = 'addedHouse === true'novalidate>
@@ -31,6 +32,16 @@
   <div ng-repeat='room in data.viewArray'>
     <p>{{room}}</p>
   </div>
+
+  <form ng-submit='addedUsers()' name= 'userForm' ng-if = 'addedHouse === true'>
+    <h4>Who's in your house?</h4>
+    <input placeholder="Roomies" type='text' name='user'></input>
+    <input type='submit' value="Tap 'em"></input>
+    <p> please separate roomies with a comma</p>
+  </form>
+  <form ng-submit = 'nextStep()' name= 'next' ng-if= 'addedRoom === true'>
+    <input type = 'submit' value = 'Continue'>
+  </form>
 
   <!-- TODO: Floors -->
 </div>

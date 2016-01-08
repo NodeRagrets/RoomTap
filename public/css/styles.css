@@ -30,14 +30,14 @@ h3 {
 }
 
 #nav-container {
-    background-color: #FF4A00;
+    background-color: #d1b3ff;
     height: 75px;
     width: 100%;
     margin-bottom: 25px;
 }
 
 #bannerText {
-    color: #FF4A00;
+    color: #a266ff;
     text-align: center;
 }
 
@@ -50,11 +50,12 @@ h3 {
 }
 
 #logo-image {
-    height: 50px;
+    height: 80px;
     display: block;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    margin-bottom:10px;
 }
 
 #copyright-text {
@@ -69,7 +70,7 @@ h3 {
     display: inline-block;
     float: right;
     margin-top: 10px;
-    background: #FF4A00;
+    background: #d1b3ff;
     border-radius: 3px;
     border: none;
     color: #fff;
@@ -79,11 +80,11 @@ h3 {
 }
 
 #logout-btn:hover {
-    background: #CF2A00 !important;
+    background: #a266ff !important;
 }
 
 .sideBar {
-    background-color: #f7f7f9;
+    background-color: #d1b3ff;
     border: 1px solid #DADFE2;
     border-radius: 3px;
     padding-left: 15px;
@@ -93,7 +94,7 @@ h3 {
 }
 
 #events-sidebar {
-    background-color: #f7f7f9;
+    background-color: #d1b3ff;
     border: 1px solid #DADFE2;
     border-color: black;
     padding: 20px;
@@ -142,7 +143,7 @@ h3 {
     margin-top: 10px;
     margin-left: 0px;
     width: 100%;
-    background: #FF4A00;
+    background: #a266ff;
     border-radius: 3px;
     border: none;
     color: #fff;
@@ -152,11 +153,11 @@ h3 {
 }
 
 .submit-btn:hover {
-    background: #CF2A00 !important;
+    background: #8080ff !important;
 }
 
 .btn-primary {
-    background: #FF4A00 !important;
+    background: #d1b3ff !important;
     border-color: black !important;
 }
 
@@ -187,17 +188,25 @@ h3 {
 }
 
 .full button span {
-    background-color: limegreen;
+    background-color: #a266ff;
     border-radius: 32px;
     color: black;
 }
 
 .partially button span {
-    background-color: orange;
+    background-color: #8080ff;
     border-radius: 32px;
     color: black;
 }
 
 .add-oppacity {
     background-color: #ffe4b2 !important;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.big {
+    font-size: 15px;
 }
