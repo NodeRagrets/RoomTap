@@ -1,6 +1,6 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', '$window', function($scope, $state, Eventstored, moment, $interval, $window) {
+  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', '$window', 'Socket', function($scope, $state, Eventstored, moment, $interval, $window, Socket) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventName = ''; //added this to accomodate  helper.addEvent input needs
@@ -11,7 +11,9 @@ angular.module('eventsInfo', [])
     $scope.eve.roomName = '';
     $scope.eve.eventAlert = '';
     $scope.eve.houseName = 'Hacker House';
-
+    $scope.house = {
+      address: ''
+    };
     // $scope.refreshEvents = function() {
     //   $interval(function(){
     //     Eventstored.getData().then(function(events) {
@@ -33,6 +35,7 @@ angular.module('eventsInfo', [])
     //   }, 500);
     // };
 
+<<<<<<< HEAD
     $scope.renderSideDashboard = function() {
       $state.go('dashboardPage.events');
       Eventstored.getData().then(function(events) {
@@ -169,4 +172,21 @@ angular.module('eventsInfo', [])
       }
       return '';
     };
+
+    Socket.on('message', function(data) {
+      console.log(data);
+    });
+
+    $scope.setHouse = function() {
+      Socket.emit('load house', $scope.house);
+    }
+
+    Socket.on('received', function(data) {
+      console.log(data.message);
+    });
+
+    $scope.updateEvents = function() {
+      Socket.emit('event update', {house: $scope.house.address, message: 'you are updated'});
+    }
+
   }]);
