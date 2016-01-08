@@ -11,7 +11,6 @@ module.exports = {
     helpers.getUserFB({'facebookCode': code})
     .then(function(oldUserRes){
       if(!oldUserRes){
-        console.log('hwh');
         res.status(200).json({result: false});
       } else {
         return res.status(200).json({ user: oldUserRes, token: utils.issueToken({username: oldUserRes.get('username')})});
@@ -22,7 +21,6 @@ module.exports = {
 
   FBsignup: function(req, res) {
     var newUser = req.body.userData;
-    console.log('in FBsignup', newUser);
     helpers.addUser(newUser)
     .then(function(newUserRes){
         return res.status(200).json({user: newUserRes, token: utils.issueToken({username: newUserRes.get('username')})});
