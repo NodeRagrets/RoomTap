@@ -15,7 +15,7 @@ angular.module('eventsInfo', [])
       address: ''
     };
     // $scope.refreshEvents = function() {
-    //   $interval(function(){
+    //   $interval(function(){ 
     //     Eventstored.getData().then(function(events) {
 
     //       var allEvents = events.data;
@@ -35,26 +35,22 @@ angular.module('eventsInfo', [])
     //   }, 500);
     // };
 
-    // $scope.renderSideDashboard = function() {
-    //   $state.go('dashboardPage.events');
-    //   Eventstored.getData().then(function(events) {
-    //       var allEvents = events.data;
-    //       console.log(allEvents);
-    //       var today = moment().dayOfYear();
+    $scope.renderSideDashboard = function() {
+      $state.go('dashboardPage.events');
+      Eventstored.getData().then(function(events) {
+          var allEvents = events.data;
+          console.log("HERES ALLEVENTS IN RENDERSIDEDASH", allEvents);
+          var today = moment().dayOfYear();
 
-    //       for (var i = 0; i < allEvents.length; i++) {
-    //         var eachDib = moment(allEvents[i].eventDate).dayOfYear();
-    //         var diff = eachDib - today;
-    //         allEvents[i].diff = diff;
-    //         console.log('This is the flag', diff);
-    //       }
-    //     var formattedEvents = Eventstored.formatData(events);
-    //     $scope.bookedEvents = formattedEvents;
-    //   });
-
-    //   // removing past daily dibs every 30s
-    //   // $scope.refreshEvents(); 
-    // };
+          for (var i = 0; i < allEvents.length; i++) {
+            var eachDib = moment(allEvents[i].eventDate).dayOfYear();
+            var diff = eachDib - today;
+            allEvents[i].diff = diff;
+            console.log('This is the flag', diff);
+          }
+        var formattedEvents = Eventstored.formatData(events);
+        $scope.bookedEvents = formattedEvents;
+      });
 
     $scope.highlightEvents = function(event) {
     console.log('test', event.diff);
