@@ -5,9 +5,9 @@ angular.module('userloginFactory', [])
       method: 'POST',
       url: '/api/users/login',
       data: { loginData: loginData }
-    })
-    .then(function(val) {
-      return val;
+    }) //changed below var to token from val
+    .then(function(token) {
+      return token;
     });
   };
 
@@ -20,3 +20,4 @@ angular.module('userloginFactory', [])
     // validToken: authenticationChecker 
   };
 });
+ 

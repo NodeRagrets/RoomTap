@@ -7,7 +7,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 module.exports = {
   postEvent: function(req,res) {
     //NOTE: we'll need to 
-    console.log("inside postevent, eventCtrl serverside");
+    console.log("HERE IS REQ", req.body);
     var eventObj = { // got it! 
       name: req.body.data.eventName, 
       description: req.body.data.eventDescription,

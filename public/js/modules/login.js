@@ -11,8 +11,9 @@ angular.module('loginInfo', [])
         alert("Must Enter Password");
       } else {
         LoginFactory.userLoginIn($scope.loginUser)
-          .then(function(finalResult) {
-            if(finalResult.data.result){
+          .then(function(token) {
+            if(token.data.token){
+              console.log("HERE IS YO TOKEN", token.data.token);
               $window.localStorage
                 .setItem('dibsToken', token.data.token);
               $state.go('dashboardPage'); 

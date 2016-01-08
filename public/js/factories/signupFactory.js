@@ -13,12 +13,12 @@ angular.module('userFactory', [])
     });
   };
 
-  var authenticationChecker = function() {
-    return !!$window.localStorage.getItem('dibsToken');
-  };
+  // var authenticationChecker = function() {
+  //   return !!$window.localStorage.getItem('dibsToken');
+  // };
 
   return {
-    signUpData : userSignIn,
-    validToken: authenticationChecker 
+    signUpData : userSignIn
+    // validToken: authenticationChecker 
   };
 });
