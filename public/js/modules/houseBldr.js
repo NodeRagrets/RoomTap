@@ -7,9 +7,10 @@ angular.module('houseBuilder', [])
         $scope.data['roomObject'] = {};
         $scope.data['viewArray'] = [];
         $scope.data['address'] = '';
+        $scope.data['users'] = '';
         $scope.addedHouse = false;
         $scope.addedRoom = false;
-
+        $scope.addedUsers = false;
 
         $scope.addAddress = function(){
           if($scope.data.address){
@@ -44,6 +45,14 @@ angular.module('houseBuilder', [])
           }
         }
 
+        $scope.addUsers = function(){
+          if($scope.data.users){
+            House.addUsers($scope.data);
+            $scope.addedHouse = true;
+          } else{
+            alert('You must add at least one user')
+          }
+        }
     }])
     // room is an object with two keys: type, name
     // home is an object with one key: address
