@@ -6,10 +6,11 @@
   </div>
   <h2>House Builder</h2>
 
-  <h4>What is your address? <h4>
+  <h4>Create Your Home! <h4>
   <form ng-submit= 'addAddress()' name = 'addresForm' novalidate>
+    <input placeholder='Home Name' type = 'text' name = 'name' ng-model = 'data.homeName' required></input>
     <input placeholder='Address' type = 'text' name= 'address' ng-model='data.address' required></input>
-    <input type = 'submit' value = 'Add Address'></input>
+    <input type = 'submit' value = "Let's Build"></input>
   </form>
 
   <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' ng-if = 'addedHouse === true'novalidate>
@@ -32,7 +33,14 @@
     <p>{{room}}</p>
   </div>
 
+  <form ng-submit= 'addUsers()' name = 'userForm'  ng-if = 'addedHouse === true' novalidate>
+    <input placeholder='Add Roomies (optional)' type = 'text' name= 'address' ng-model='data.users' required></input>
+    <input type = 'submit' value = "Tap 'em"></input>
+  </form>
   <!-- TODO: Floors -->
+  <form ng-submit = 'continue()' ng-if = 'addedRoom === true'>
+    <input type = 'submit' value = 'Continue'></input>
+  </form>
 </div>
 <div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
   <div class="container">
