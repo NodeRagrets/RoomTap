@@ -85,7 +85,11 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
       FB.api('/me', {fields: 'name, email'}, function(res){
 
         $rootScope.$apply(function(){
-          $rootScope.user = res;
+          if(res.name && res.id){
+            console.log('gah');
+            $rootScope.user = res;
+          }
+          console.log($rootScope.user);
           $http({
                 method: 'POST',
                 url: '/api/users/facebookAuth',
@@ -96,6 +100,8 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
               $state.go('facebookSignupPage');
             } else {
               $window.localStorage.setItem('dibsToken', authRes.data.token);
+              $state.go('dashboardPage');
+
             }
           });
         })
@@ -119,71 +125,98 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
           })
     }
 
-    var facebookLogout = function(){
+    // var facebookLogout = function(){
 
-      FB.logout(function(res){
+    //   FB.logout(function(res){
 
-        $rootScope.$apply(function(){
-          $rootScope.user = {};
-        })
+    //     $rootScope.$apply(function(){
+    //       $rootScope.user = {};
+    //     })
 
-      });
+    //   });
 
-    }
+    // }
 
 
   return {
     'getUserInfo': getUserInfo,
-    'checkLoginStatus': checkLoginStatus,
-    'facebookLogout': facebookLogout
+    'checkLoginStatus': checkLoginStatus
+    // 'facebookLogout': facebookLogout
   };
 
   }])
 
   .run(['$state', '$rootScope', 'SignUpFactory', '$window', 'facebookAuth', function($state, $rootScope, SignUpFactory, $window, facebookAuth) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
-      if(toState.data.authenticate === true && SignUpFactory.validToken) {
+
+     //  if(!SignUpFactory.validToken() && toState.data.access) {
+     //   event.preventDefault();
+     //   $state.go('signupPage');
+     //   return;
+     // }
+
+     // if(SignUpFactory.validToken() && !toState.data.access) {
+     //   event.preventDefault();
+     //   $state.go('user.dashboard.groupcreate');
+     //   return;
+     // }
+
+      if(toState.data.authenticate === true && !SignUpFactory.validToken()) {
+       if(toState.name === "signupPage") {
+         return;
+       }
+        event.preventDefault();
         $state.go('signupPage');
-        event.preventDefault();
-      }
-
-      if(toState.data.authenticate === false && SignUpFactory.validToken) {
-        $state.go('dashboardPage');
-        event.preventDefault();
-      }
-    });
-
-    $rootScope.user = {};
-
-    (function(d){
-      var js;
-      var id = 'facebook-jssdk';
-      var ref = d.getElementsByTagName('script')[0];
-      if(d.getElementById(id)) {
+        $window.fbAsyncInit();
+        
         return;
       }
 
-      js = d.createElement('script');
-      js.id = id;
-      js.async = true;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
+      if(toState.data.authenticate === false && SignUpFactory.validToken()) {
+        event.preventDefault();
+        $state.go('dashboardPage');
+        $window.fbAsyncInit();
+        
+      }
 
-      ref.parentNode.insertBefore(js, ref);
-    })(document)
+      if(toState.name === 'loginupPage') {
+        $window.fbAsyncInit();
+        
 
-    $window.fbAsyncInit = function(){
-      //executes when SDK loads
-      FB.init({
-        appId: '1513513728979196',
-        channelUrl: '/channel.html',
-        status: true,
-        cookie: true,
-        xfbml: true,
-        version: 'v2.5'
-      })
+      }
 
-      facebookAuth.checkLoginStatus();
+      // $rootScope.user = {};
 
-    }
+      (function(d){
+        var js;
+        var id = 'facebook-jssdk';
+        var ref = d.getElementsByTagName('script')[0];
+        if(d.getElementById(id)) {
+          return;
+        }
+
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+
+        ref.parentNode.insertBefore(js, ref);
+      })(document)
+
+      $window.fbAsyncInit = function(){
+        //executes when SDK loads
+        FB.init({
+          appId: '1513513728979196',
+          channelUrl: '/channel.html',
+          status: true,
+          cookie: true,
+          xfbml: true,
+          version: 'v2.5'
+        })
+
+        facebookAuth.checkLoginStatus();
+
+      }
+    });
 
 }]);
