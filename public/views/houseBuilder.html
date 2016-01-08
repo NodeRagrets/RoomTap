@@ -32,7 +32,11 @@
     <p>{{room}}</p>
   </div>
 
-  <!-- TODO: Floors -->
+<form ng-submit='addUsers()' name='inviteUsers' ng-if= 'addedHouse === true' novalidate>
+  <input placeholder='Add roomies' type='text' name = 'users' ng-model = 'data.users'>
+  <input type='submit' value = "Tap'em">
+</form>
+  <!-- TODO: invite users -->
 </div>
 <div class="navbar navbar-fixed-bottom" role="footer" style="background-color: #f7f7f9">
   <div class="container">
