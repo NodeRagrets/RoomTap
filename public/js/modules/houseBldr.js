@@ -1,5 +1,5 @@
 angular.module('houseBuilder', [])
-    .controller('houseBldr', ['$scope', 'House', function($scope, House){
+    .controller('houseBldr', ['$scope', 'House', '$window', function($scope, House, $window){
         $scope.data = {};
         $scope.data['roomName'] = '';
         $scope.data['roomType'] = '';
@@ -8,12 +8,16 @@ angular.module('houseBuilder', [])
         $scope.data['viewArray'] = [];
         $scope.data['address'] = '';
         $scope.data['users'] = '';
+        // $scope.data['home']={}
+        // $scope.data['id'];
+
+
         $scope.addedHouse = false;
         $scope.addedRoom = false;
         $scope.addedUsers = false;
 
         $scope.addAddress = function(){
-          if($scope.data.address){
+          if($scope.data.address && $scope.data.homeName){
             var home = $scope.data.address;
             //permanently store the text in $scope.data
             House.addHouse($scope.data);
@@ -53,6 +57,26 @@ angular.module('houseBuilder', [])
             alert('You must add at least one user')
           }
         }
+
+        $scope.continue = function(){
+            console.log($scope.data, 'CONTINUE SCOPE.DATA')
+          if($scope.addedHouse === true && $scope.addedRoom === true){
+            console.log($scope.data, 'CONTINUE SCOPE.DATA')
+            // $scope.data.home['address'] = $scope.data.address;
+            House.getHomes($scope.data).then(function(result){
+              console.log("JESHSEJKR", result.id)
+               $window.localStorage.setItem('homeID', result.id);
+              //  console.log($window.localstorage)
+            })
+            .catch(function(err){
+              console.log("EROROROROROROROROR")
+            });
+          }else{
+            alert('Please complete required input fields');
+          }
+        }
+
+
     }])
     // room is an object with two keys: type, name
     // home is an object with one key: address
