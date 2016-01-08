@@ -1,5 +1,5 @@
 angular.module('userFactory', [])
-.factory('SignUpFactory', function($http) {
+.factory('SignUpFactory', function($http, $window) {
   var userSignIn = function(userData) {
     return $http({
       method: 'POST',
