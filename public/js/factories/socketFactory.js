@@ -1,5 +1,5 @@
 angular.module('socketFactory', [])
-  .factory('socketio', ['$rootScope', function ($rootScope) {
+  .factory('Socket', ['$rootScope', function ($rootScope) {
     var socket = io.connect();
     return{
       on: function(eventName, callback) {
