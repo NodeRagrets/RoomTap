@@ -145,6 +145,22 @@ var helpers = {
     });
   },
 
+  getHomeById: function(homeId) {
+    return db.Homes.findOne({
+      where: { id: homeId }
+    })
+    .then(function(homeRes) {
+      if(!homeRes) {
+        throw Error('Home not found!');
+      }
+      return homeRes;
+    })
+    .catch(function(error) {
+      console.log('Error retrieving home: ', error);
+    });
+  },
+
+
   getUser: function(user) {
     return db.Users.findOne({
       where: {username: user.username}
