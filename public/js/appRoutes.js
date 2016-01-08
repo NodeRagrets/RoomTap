@@ -1,6 +1,6 @@
 //parent module
 // inject children modules for access
-angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder', 'houseFactory'])
+angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'eventsInfoFactory', 'userInfo', 'userFactory', 'loginInfo', 'userloginFactory', 'houseBuilder', 'houseFactory', 'socketFactory'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise('signup');
     $httpProvider.interceptors.push('AttachToken');
@@ -14,6 +14,16 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
           'indexPage' : {
             templateUrl : 'views/signup.html',
             controller : 'userSignUp'
+          }
+        },
+        data : { authenticate: false }
+      })
+      .state('facebookSignupPage', {
+        url : '/FBsignup',
+        views: {
+          'indexPage' : {
+            templateUrl : 'views/FBsignup.html',
+            controller : 'FBuserSignUp'
           }
         },
         data : { authenticate: false }
@@ -68,7 +78,7 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
     };
   })
 
-  .factory('facebookAuth', ['$rootScope', '$http', '$window', function($rootScope, $http, $window){
+  .factory('facebookAuth', ['$rootScope', '$http', '$window', '$state', function($rootScope, $http, $window, $state){
     var getUserInfo = function(){
       var _self = this;
 
@@ -81,8 +91,12 @@ angular.module('dibs', ['ngAnimate', 'ui.bootstrap','ui.router','eventsInfo', 'e
                 url: '/api/users/facebookAuth',
                 data: $rootScope.user
               })
-          .then(function(res){
-            $window.localStorage.setItem('dibsToken', res.data.token);
+          .then(function(authRes){
+            if(authRes.data.result === false){
+              $state.go('facebookSignupPage');
+            } else {
+              $window.localStorage.setItem('dibsToken', authRes.data.token);
+            }
           });
         })
 
