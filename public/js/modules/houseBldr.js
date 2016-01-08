@@ -59,7 +59,7 @@ angular.module('houseBuilder', [])
           }
         }
 
-        $scope.continue = function(){
+        $scope.nextStep = function(){
             console.log($scope.data, 'CONTINUE SCOPE.DATA')
           if($scope.addedHouse === true && $scope.addedRoom === true){
             console.log($scope.data, 'CONTINUE SCOPE.DATA')

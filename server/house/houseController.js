@@ -34,6 +34,15 @@ module.exports = {
     }
   },
   users: function(req, res){
+    console.log('USERS REQBODY', req.body);
+
+    helpers.addUserToHome(user,home)
+            .then( function(results){
+
+            })
+            .catch( function(err){
+              console.log('ERROR IN USERS', err);
+            })
 
   },
   retrieveHome: function(req, res){
