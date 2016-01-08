@@ -13,12 +13,13 @@ angular.module('userInfo', [])
       } else if($scope.user.password === '') {
         alert("Must Enter Password");
       } else {
-        $state.go('dashboardPage');
+        // $state.go('dashboardPage');
         SignUpFactory.signUpData($scope.user)
           .then(function(token) {
             console.log("HERE IS TOKEN", token);
             $window.localStorage
-            .setItem('dibsToken', token.data.token);
+            .setItem('dibsToken', token.data.token); //moved this here - it used to be above $window.localStorage
+            $state.go('dashboardPage');
           });
       }
     },
