@@ -14,7 +14,7 @@ angular.module('eventsInfo', [])
     $scope.house = {
       address: ''
     };
-    // $scope.refreshEvents = function() {
+    // $scope.refreshEvents = function() { 
     //   $interval(function(){ 
     //     Eventstored.getData().then(function(events) {
 
@@ -79,6 +79,7 @@ angular.module('eventsInfo', [])
     };
 
     $scope.signout = function() {
+      $window.localStorage.removeItem('dibsToken');
       $state.go('signupPage');
     };
 
