@@ -1,6 +1,6 @@
 angular.module('eventsInfo', [])
   .constant('moment', moment)
-  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', function($scope, $state, Eventstored, moment, $interval) {
+  .controller('eventsController', ['$scope', '$state', 'Eventstored', 'moment', '$interval', '$window', function($scope, $state, Eventstored, moment, $interval, $window) {
     $scope.eve = {};
     $scope.eve.eventDate = '';
     $scope.eve.eventName = ''; //added this to accomodate  helper.addEvent input needs
@@ -68,6 +68,7 @@ angular.module('eventsInfo', [])
 
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
+      $events.homeID = $window.localStorage.getItem('homeID');
       Eventstored.postEvent($events)
       .then(function(response) {
         if(!response.data.result) {

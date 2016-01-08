@@ -8,7 +8,7 @@ module.exports = {
   postEvent: function(req,res) {
     //NOTE: we'll need to 
     console.log("inside postevent, eventCtrl serverside");
-    var eventObj = { // got it!
+    var eventObj = { // got it! 
       name: req.body.data.eventName, 
       description: req.body.data.eventDescription,
       date: req.body.data.eventDate, 
@@ -16,22 +16,25 @@ module.exports = {
     };
 
     var userObj = {
-      username: '' //jwt 
+      username: req.token.data.token.username 
     };
+
 
     var homeObj = {
       address: ''
     };
 
+    // helpers.getHome()
+
     //query user table in DB for username to get HomeId
-    helpers.getUser(userObj)
+    helpers.getHome(userObj)
       .then(function(user) {
-        homeObj.address = user.get('HomeId');
+        homeObj.id = user.get('HomeId');
       });
     //pass all completed objects to addEvent
     helpers.getRooms(homeObj)
       .then(function(roomsArray) {
-        console.log(roomsArray);
+        console.log("HERE IS ROOMSARRAY", roomsArray);
         //NOTE: need to console log roomsArray to know what's on it, to filter for the roomnames that came in on req.body.data.roomNames
         helpers.addEvent(eventObj, userObj, homeObj, roomsArray);
 
