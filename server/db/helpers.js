@@ -160,6 +160,21 @@ var helpers = {
     });
   },
 
+  getUserFB: function(user) {
+    return db.Users.findOne({
+      where: {facebookCode: user.facebookCode}
+    })
+    .then(function(userRes) {
+      if(!userRes) {
+        throw Error('User not found!');
+      }
+      return userRes;
+    })
+    .catch(function(error) {
+      console.log('Error retrieving user: ', error);
+    });
+  },
+
   getEvents: function(options) {
     if(options.user) {
       return db.Users.findOne({
