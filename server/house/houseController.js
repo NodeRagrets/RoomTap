@@ -11,7 +11,7 @@ module.exports = {
     helpers.addHome(houseData)
            .then( function(result){
              console.log('SUCCESS INSIDE ADDRESS');
-             res.status(200).send(res.body);
+             res.status(200).send(result);
            })
            .catch( function(err){
              console.log('ERROR INSIDE ADDRESS', err);
@@ -25,7 +25,7 @@ module.exports = {
       helpers.addRoom(roomArray[i], houseData)
              .then( function(results){
                console.log('SUCCESS INSIDE BUILD');
-               res.status(200).send(res.body);
+               res.status(200).send(results);
              })
              .catch( function(err){
                console.log('ERROR INSIDE BUILD', err);
