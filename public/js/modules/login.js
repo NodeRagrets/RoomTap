@@ -16,7 +16,11 @@ angular.module('loginInfo', [])
               console.log("HERE IS YO TOKEN", token.data.token);
               $window.localStorage
                 .setItem('dibsToken', token.data.token);
-              $state.go('dashboardPage'); 
+                if(token.data.token.hasHomeOnLogin) {
+                  $state.go('dashboardPage'); 
+                } else {
+                  $state.go('houseBuilder');
+                }
             } else {
               alert("Incorrect Username or Password");              
             }
