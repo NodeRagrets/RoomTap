@@ -7,7 +7,6 @@ angular.module('houseFactory',[])
           url: '/api/houses/address',
           data: house
         }).then(function(response){
-          console.log(response.data, "RESPONSE.DATA")
           return response.data;
         }).catch(function(error){
           console.log('ERROR IN ADDHOUSE FACTORY')
@@ -39,10 +38,24 @@ angular.module('houseFactory',[])
          })
        };
 
+       var getHomes = function(home){
+
+         return $http({
+           method: 'POST',
+           url: '/api/houses/retrieveHome',
+           data: home
+         }).then(function(response){
+           return response.data;
+         }).catch(function(error){
+           console.log('ERROR IN GETHOMES FACTORY', error);
+         })
+       };
+
       return {
         addHouse: addHouse,
         addRooms: addRooms,
-        addUsers: addUsers
+        addUsers: addUsers,
+        getHomes: getHomes
       }
 
   }])
