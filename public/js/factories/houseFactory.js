@@ -11,7 +11,8 @@ angular.module('houseFactory',[])
         }).catch(function(error){
           console.log('ERROR IN ADDHOUSE FACTORY')
         })
-      }
+      };
+
       var addRooms = function(rooms){
 
           return $http({
@@ -23,9 +24,38 @@ angular.module('houseFactory',[])
           }).catch(function(error){
             console.log('ERROR IN ADDROOMS FACTORY', error);
           })
-       }
+       };
+
+       var addUsers = function(users){
+         return $http({
+           method: 'POST',
+           url: '/api/houses/users',
+           data: users
+         }).then(function(response){
+           return response.data;
+         }).catch(function(error){
+           console.log('ERROR IN ADDUSERS FACTORY', error);
+         })
+       };
+
+       var getHomes = function(home){
+
+         return $http({
+           method: 'POST',
+           url: '/api/houses/retrieveHome',
+           data: home
+         }).then(function(response){
+           return response.data;
+         }).catch(function(error){
+           console.log('ERROR IN GETHOMES FACTORY', error);
+         })
+       };
+
       return {
         addHouse: addHouse,
-        addRooms: addRooms
+        addRooms: addRooms,
+        addUsers: addUsers,
+        getHomes: getHomes
       }
+
   }])
