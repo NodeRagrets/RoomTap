@@ -19,7 +19,8 @@ module.exports = {
     };
 
     var homeObj = {
-      address: ''
+      address: '',
+      id: req.body.HomeId
     };
 //==============SINGLE ROOMNAME DEFINED HERE 
     var eventRoom = req.body.roomName;
@@ -28,15 +29,16 @@ module.exports = {
     var emailData = { 
       userWhoBookedARoom: req.token.username,
       housemateEmails: [],
-      // houseName: '',
+      houseName: '',
       roomName: eventRoom,
       eventDate: eventObj.date
     };
 
-    helpers.getHome(userObj)
-      .then(function(user) {
-        homeObj.id = user.get('HomeId');
-    });
+    //why isn't this working.
+    helpers.getHomeById(homeObj.id)
+      .then(function(resHome) {
+        homeObj.address = resHome.get('address');
+      });
 
     helpers.getRooms(homeObj)
       .then(function(roomsArray) {
@@ -49,7 +51,7 @@ module.exports = {
 
         helpers.addEvent(eventObj, userObj, homeObj, eventRoomArr)
           .then(function(response) {
-            res.status(200).send('success! Event added. ');
+            res.status(200).send('success! Event added.');
           });
     });
 
@@ -64,42 +66,59 @@ module.exports = {
   
   },
 
-
-
-  loadEvents: function(req,res) {
-    var userObj = {
-      username: req.token.username 
-    };
-
+  postCurrentHouseID: function(req, res) {
     var homeObj = {
-      address: '',
-      id: ''
+      home: { address: '' }
     };
 
-    helpers.getUser(userObj)
-      .then(function(user) {
-        // console.log("HERE IS USER", user);
-        homeObj.id = user.get('HomeId');
-      });    
-
-    helpers.getHomeById(homeObj)
-      .then(function(resHome) {
-        homeObj.id = resHome.get('id');
-      });
-
-    var optionsObj = {
-      home: homeObj
-    };
-
-    helpers.getEvents(optionsObj)
-      .then(function(eventsArray) {
-        console.log("HERE IS EVENTS ARRAY RETURNED FROM DB", eventsArray);
-        //NOTE: depending on the consolelog above, may need to modify the array before sending it back
-        res.status(200).send(eventsArray);
+    helpers.getHomeById(req.body)
+      .then(function(home) {
+        homeObj.home.address = home.get('address');
+        helpers.getEvents(homeObj)
+          .then(function(eventsArray) {
+            console.log("HERE IS EVENTS ARRAY RETURNED FROM DB", eventsArray);
+            res.status(200).send(eventsArray);
+          })
       })
-
   }
 }
+
+  // loadEvents: function(req,res) {
+  //   var userObj = {
+  //     username: req.token.username 
+  //   };
+
+  //   var homeObj = {
+  //     address: '',
+  //     id: req.token.
+  //   };
+
+  //   helpers.
+
+    // helpers.getHomes(userObj)
+    //   .then(function(user) {
+    //     // console.log("HERE IS USER", user);
+    //     homeObj.id = user.get('HomeId');
+    //   });    
+
+    // helpers.getHomeById(homeObj)
+    //   .then(function(resHome) {
+    //     homeObj.id = resHome.get('id');
+    //   });
+
+//     var optionsObj = {
+//       home: homeObj
+//     };
+
+//     helpers.getEvents(optionsObj)
+//       .then(function(eventsArray) {
+//         console.log("HERE IS EVENTS ARRAY RETURNED FROM DB", eventsArray);
+//         //NOTE: depending on the consolelog above, may need to modify the array before sending it back
+//         res.status(200).send(eventsArray);
+//       })
+
+//   }
+// }
 
 
 
