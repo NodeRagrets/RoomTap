@@ -11,13 +11,22 @@ angular.module('eventsInfoFactory', [])
     });
   };
 
-  //retrieves events  
-  var getData = function() {
+  var postCurrentHouseID = function(currentHomeId) {
     return $http({
-      method: 'GET',
-      url: '/api/events/events'
+      method: 'POST',
+      url: '/api/events/booked',
+      data: currentHomeId
+    }).then(function(responseObj){
+      return responseObj;
     });
-  };
+  }
+  //retrieves events  
+  // var getData = function() {
+  //   return $http({
+  //     method: 'GET',
+  //     url: '/api/events/events'
+  //   });
+  // };
 
   var formatData = function(events) {
     var eventsCollection = events.data;
@@ -38,7 +47,8 @@ angular.module('eventsInfoFactory', [])
 
   return {
     postEvent : postEvent,
-    getData : getData,
+    // getData : getData,
+    postCurrentHouseID : postCurrentHouseID,
     formatData : formatData
   };
 });
