@@ -6,7 +6,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 
 module.exports = {
   postEvent: function(req,res) {
-    // console.log("HERE IS REQ RAWRR", req.body);
+    console.log("HERE IS REQ RAWRR BODY BBBB", req.body);
     var eventObj = { 
       name: req.body.eventName, 
       description: req.body.eventDescription,
@@ -43,7 +43,7 @@ module.exports = {
     helpers.getRooms(homeObj)
       .then(function(roomsArray) {
         console.log("HERE IS ROOMSARRAY", roomsArray);
-        [].forEach.call(roomsArray, function(room) {
+        roomsArray.forEach(function(room) {
           if(room.get('name') === eventRoom) {
             eventRoomArr.push(room);
           }
