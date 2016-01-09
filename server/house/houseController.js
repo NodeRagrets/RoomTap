@@ -34,15 +34,25 @@ module.exports = {
     }
   },
   users: function(req, res){
-    console.log('USERS REQBODY', req.body);
+    console.log('USERS REQBODY', req.body.users);
+    var userString = req.body.users;
+    var userArray = userString.split(',');
+    var houseObj = {};
+    houseObj['address'] = req.body.address
+    for(var i = 0; i< userArray.length; i++){
+      var userObj = {};
+      userObj['username']= userArray[i];
+      helpers.addUserToHome(userObj,houseObj)
+              .then( function(results){
+                console.log('SUCCESS INSIDE USERS');
+                res.status(200).send(results);
+              })
+              .catch( function(err){
+                console.log('ERROR IN USERS', err);
+                res.sendStatus(404);
+              })
+    }
 
-    helpers.addUserToHome(user,home)
-            .then( function(results){
-
-            })
-            .catch( function(err){
-              console.log('ERROR IN USERS', err);
-            })
 
   },
   retrieveHome: function(req, res){
