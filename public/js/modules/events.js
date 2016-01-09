@@ -14,8 +14,15 @@ angular.module('eventsInfo', [])
     $scope.house = {
       address: ''
     };
-    // $scope.refreshEvents = function() { 
-    //   $interval(function(){ 
+    $scope.eve.houseArray = [];
+
+    // $scope.getHomes = function(){
+    //
+    // }
+
+
+    // $scope.refreshEvents = function() {
+    //   $interval(function(){
     //     Eventstored.getData().then(function(events) {
 
     //       var allEvents = events.data;
@@ -83,7 +90,7 @@ angular.module('eventsInfo', [])
       $state.go('signupPage');
     };
 
-    //TIME ADDON 
+    //TIME ADDON
     $scope.eve.eventDate = new Date();
     $scope.hstep = 1;
     $scope.mstep = 1;
