@@ -262,32 +262,39 @@ var helpers = {
     });
   },
 
-  getHousemateEmails: function(home) {
-    var userEmails = [];
+  getRoomsById: function(home) {
     return db.Homes.findOne({
-      where: {address: home.address}
+      where: {id: home.id}
     })
     .then(function(homeRes) {
-      if (!homeRes) {
-        throw Error('Home not found!');
-      }
-      return db.Users.findAll({
-        where: {'HomeId': homeRes.id}
-      })
-      .then(function(usersArray) {
-        if(!usersArray) {
-          throw Error('No users found!');
-        }
-        usersArray.forEach(function(user) {
-          userEmails.push(user.get('email'));
-        });
-        return userEmails;
-      });
+      return homeRes.getRooms()
+        .then(function(roomsArray) {
+          return roomsArray;
+        })
     })
     .catch(function(error) {
+      console.log('Error retrieving rooms: ', error);
+    });
+  },
+
+  getHousemateEmails: function(thishome) {
+    var userEmails = [];
+    return helpers.getHomeById(thishome.id)
+      .then(function(home) {
+        return home.getUsers()
+          .then(function(usersArray) {
+            var userEmails = [];
+            usersArray.forEach(function(user) {
+              userEmails.push(user.get('email'));
+            });
+            return userEmails;
+        })
+      })
+      .catch(function(error) {
       console.log('Error retrieving housemate emails: ', error);
     });
   },
+
 
   getUserHomes: function(user){
     return helpers.getUser(user)
