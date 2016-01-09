@@ -262,6 +262,21 @@ var helpers = {
     });
   },
 
+  getRoomsById: function(home) {
+    return db.Homes.findOne({
+      where: {id: home.id}
+    })
+    .then(function(homeRes) {
+      return homeRes.getRooms()
+        .then(function(roomsArray) {
+          return roomsArray;
+        })
+    })
+    .catch(function(error) {
+      console.log('Error retrieving rooms: ', error);
+    });
+  },
+
   getHousemateEmails: function(thishome) {
     var userEmails = [];
     return helpers.getHomeById(thishome.id)

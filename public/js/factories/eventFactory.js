@@ -14,7 +14,7 @@ angular.module('eventsInfoFactory', [])
   var postCurrentHouseID = function(currentHomeId) {
     return $http({
       method: 'POST',
-      url: '/api/events/booked',
+      url: '/api/events/events',
       data: currentHomeId
     }).then(function(responseObj){
       return responseObj;

@@ -53,9 +53,9 @@ module.exports = {
 		this.transport.sendMail({
 		  from: "RoomTapTap... <roomtaptap@gmail.com>", 
 		  to: emailDataObj.housemateEmails, 
-		  subject: "hello"
-		  // subject: "RoomTap Notification: " + emailDataObj.userWhoBookedARoom + "booked a room in " + emailDataObj.houseName + "."
-		  // text: "Heads up from RoomTap! \n" + emailDataObj.userWhoBookedARoom + " booked the room " + emailDataObj.roomName + " in " + emailDataObj.houseName + " on " + emailDataObj.eventDate + ". \nHave a great day! \n -The RoomTap Team"
+		  // subject: "Hello from RoomTap! A room has been reserv"
+		  subject: "RoomTap Notification: " + emailDataObj.userWhoBookedARoom + " booked a room in " + emailDataObj.houseName + ".",
+		  text: "Heads up from RoomTap! \n" + emailDataObj.userWhoBookedARoom + " booked the room " + emailDataObj.roomName + " on " + emailDataObj.eventDate + ". \nHave a great day! \n -The RoomTap Team"
 		}, function(error, response){
 		    if(error){
 		      console.log(error);
