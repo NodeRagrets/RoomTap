@@ -121,6 +121,10 @@ h3 {
     text-align: center;
 }
 
+.houseBuilder{
+  margin-left: 50px;
+}
+
 .standardInputStyling {
     width: 100%;
     height: 34px;
