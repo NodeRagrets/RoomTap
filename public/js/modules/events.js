@@ -21,30 +21,11 @@ angular.module('eventsInfo', [])
     // }
 
 
-    // $scope.refreshEvents = function() {
-    //   $interval(function(){
-    //     Eventstored.getData().then(function(events) {
-
-    //       var allEvents = events.data;
-    //       console.log(allEvents);
-    //       var today = moment().dayOfYear();
-
-    //       for (var i = 0; i < allEvents.length; i++) {
-    //         var eachDib = moment(allEvents[i].eventDate).dayOfYear();
-    //         var diff = eachDib - today;
-    //         allEvents[i].diff = diff;
-    //         console.log('This is the flag', diff);
-    //       }
-    //       var formattedEvents = Eventstored.formatData(events);
-    //       console.log("HERE IS FORMATTED EVENTS", formattedEvents);
-    //       $scope.bookedEvents = formattedEvents;
-    //     });
-    //   }, 500);
-    // };
 
     $scope.renderSideDashboard = function() {
       $state.go('dashboardPage.events');
-      Eventstored.getData().then(function(events) {
+      EventStored.postCurrentHouseID($window.localStorage.getItem('homeID'))
+        .then(function(events) {
           var allEvents = events.data;
           console.log("HERES ALLEVENTS IN RENDERSIDEDASH", allEvents);
           var today = moment().dayOfYear();
@@ -74,7 +55,7 @@ angular.module('eventsInfo', [])
 
     $scope.eventSubmit = function() {
       var $events = $scope.eve;
-      $events.homeID = $window.localStorage.getItem('homeID');
+      $events.HomeId = $window.localStorage.getItem('homeID');
       Eventstored.postEvent($events)
       .then(function(response) {
         if(!response.data.result) {
