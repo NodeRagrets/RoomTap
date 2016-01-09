@@ -10,7 +10,7 @@
   <form ng-submit= 'addAddress()' name = 'addresForm' novalidate>
     <input placeholder="Home Name" type = 'text' name='name' ng-model= 'data.homeName' required></input>
     <input placeholder='Address' type = 'text' name= 'address' ng-model='data.address' required></input>
-    <input type = 'submit' value = "Let's Build"></input>
+    <input type = 'submit' value = "Let's Build" class = 'btn-primary'></input>
   </form>
 
   <form ng-submit= 'addRoomToHouse()' name= 'roomNamerForm' ng-if = 'addedHouse === true'novalidate>
@@ -26,7 +26,7 @@
         <option>Garage</option>
         <option>Misc. Room</option>
       </select>
-    <input type= 'submit' value= 'Add Room'>
+    <input class = 'btn-primary'type= 'submit' value= 'Add Room'>
   </form>
   <h5 ng-if = 'addedHouse === true'>Rooms in your house:</h5>
   <div ng-repeat='room in data.viewArray'>
@@ -36,11 +36,11 @@
   <form ng-submit='addUsers()' name= 'userForm' ng-if = 'addedHouse === true'>
     <h4>Who's in your house?</h4>
     <input placeholder="Roomies" type='text' name='user' ng-model = 'data.users'></input>
-    <input type='submit' value="Tap 'em"></input>
+    <input type='submit' value="Tap 'em" class = 'btn-primary'></input>
     <p> please separate roomies with a comma</p>
   </form>
   <form ng-submit = 'nextStep()' name= 'next' ng-if= 'addedRoom === true'>
-    <input type = 'submit' value = 'Continue'>
+    <input type = 'submit' value = 'Continue' class = 'btn-primary'>
   </form>
 
   <!-- TODO: Floors -->
