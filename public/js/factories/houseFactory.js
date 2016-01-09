@@ -51,11 +51,24 @@ angular.module('houseFactory',[])
          })
        };
 
+      //  var usersHomes = function(user){
+       //
+      //    return $http({
+      //      method: 'GET',
+      //      url: 'api/houses/usersHomes'
+      //    }).then(function(response){
+      //      return response.data;
+      //    }).catch(function(error){
+      //      console.log('ERROR IN USERSHOMES',error);
+      //    })
+      //  };
+
       return {
         addHouse: addHouse,
         addRooms: addRooms,
         addUsers: addUsers,
-        getHomes: getHomes
+        getHomes: getHomes,
+        // usersHomes: usersHomes
       }
 
   }])

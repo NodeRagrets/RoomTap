@@ -42,7 +42,7 @@ h3 {
 }
 
 #logo-orange-image {
-    height: 200px;
+    height: 250px;
     display: block;
     margin-top: 10px;
     margin-left: auto;
@@ -50,12 +50,9 @@ h3 {
 }
 
 #logo-image {
-    height: 80px;
     display: block;
-    margin-top: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom:10px;
+    width: 140px;
+    height: 80px;
 }
 
 #copyright-text {
@@ -124,6 +121,10 @@ h3 {
     text-align: center;
 }
 
+.houseBuilder{
+  margin-left: 50px;
+}
+
 .standardInputStyling {
     width: 100%;
     height: 34px;
@@ -158,7 +159,16 @@ h3 {
 
 .btn-primary {
     background: #d1b3ff !important;
-    border-color: black !important;
+    /*border-color: black !important;*/
+}
+
+.btn-primary:hover {
+    background: #8080ff !important;
+    /*border-color: black !important;*/
+}
+
+.houseButtons {
+  background: #d1b3ff !important;
 }
 
 .timePicker {
