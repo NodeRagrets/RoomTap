@@ -3,7 +3,7 @@ angular.module('userInfo', [])
     $scope.user = {};
     $scope.user.username = '';
     $scope.user.email = '';
-    $scope.user.password = ''; 
+    $scope.user.password = '';
 
     $scope.signUp = function() {
       if($scope.user.username === '') {
@@ -34,7 +34,7 @@ angular.module('userInfo', [])
     $scope.user.username = '';
     $scope.user.email = '';
     $scope.user.facebookCode = $rootScope.user.id;
-    
+
 
     $scope.signUp = function() {
       if($scope.user.username === '') {
@@ -42,7 +42,7 @@ angular.module('userInfo', [])
       } else if($scope.user.email === '') {
         alert("Must Enter Valid Email");
       } else {
-        $state.go('dashboardPage');
+        $state.go('houseBuilder');
         $http({
           method:'POST',
           url: '/api/users/signup',
@@ -50,7 +50,7 @@ angular.module('userInfo', [])
         })
         .then(function(res){
               $window.localStorage.setItem('dibsToken', res.data.token);
-              $state.go('dashboardPage');
+              $state.go('houseBuilder');
         })
       }
     },
