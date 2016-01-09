@@ -74,8 +74,7 @@ models.Users.sync({force: false}).then(function() {
   // return models.Users.create({
   //   username: 'ScroTom',
   //   password: 'pass',
-  //   email: 'tom@gmail.com',
-  //   HomeId: 1
+  //   email: 'tom@gmail.com'
   // });
 });
 
