@@ -34,7 +34,6 @@ module.exports = {
     }
   },
   users: function(req, res){
-    console.log('USERS REQBODY', req.body.users);
     var userString = req.body.users;
     var userArray = userString.split(',');
     var houseObj = {};
@@ -56,7 +55,6 @@ module.exports = {
 
   },
   retrieveHome: function(req, res){
-    console.log(req.body, "RETRIEVEHOME REQBODY");
     helpers.getHome(req.body)
            .then(function(resultData){
              console.log('SUCCESS INSIDE RETRIEVEHOME');
