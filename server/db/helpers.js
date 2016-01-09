@@ -262,31 +262,24 @@ var helpers = {
     });
   },
 
-  getHousemateEmails: function(home) {
+  getHousemateEmails: function(thishome) {
     var userEmails = [];
-    // return db.Homes.findOne({
-    //   where: {address: home.address}
-    // })
-    // .then(function(homeRes) {
-    //   if (!homeRes) {
-    //     throw Error('Home not found!');
-    //   }
-    return db.Users.findAll({
-      where: {'HomeId': home.id}
-    })
-    .then(function(usersArray) {
-      if(!usersArray) {
-        throw Error('No housemates found!');
-      }
-      usersArray.forEach(function(user) {
-        userEmails.push(user.get('email'));
-      });
-      return userEmails;
-    })
-    .catch(function(error) {
+    return helpers.getHomeById(thishome.id)
+      .then(function(home) {
+        return home.getUsers()
+          .then(function(usersArray) {
+            var userEmails = [];
+            usersArray.forEach(function(user) {
+              userEmails.push(user.get('email'));
+            });
+            return userEmails;
+        })
+      })
+      .catch(function(error) {
       console.log('Error retrieving housemate emails: ', error);
     });
   },
+
 
   getUserHomes: function(user){
     return helpers.getUser(user)
