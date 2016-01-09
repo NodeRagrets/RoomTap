@@ -264,25 +264,24 @@ var helpers = {
 
   getHousemateEmails: function(home) {
     var userEmails = [];
-    return db.Homes.findOne({
-      where: {address: home.address}
+    // return db.Homes.findOne({
+    //   where: {address: home.address}
+    // })
+    // .then(function(homeRes) {
+    //   if (!homeRes) {
+    //     throw Error('Home not found!');
+    //   }
+    return db.Users.findAll({
+      where: {'HomeId': home.id}
     })
-    .then(function(homeRes) {
-      if (!homeRes) {
-        throw Error('Home not found!');
+    .then(function(usersArray) {
+      if(!usersArray) {
+        throw Error('No housemates found!');
       }
-      return db.Users.findAll({
-        where: {'HomeId': homeRes.id}
-      })
-      .then(function(usersArray) {
-        if(!usersArray) {
-          throw Error('No users found!');
-        }
-        usersArray.forEach(function(user) {
-          userEmails.push(user.get('email'));
-        });
-        return userEmails;
+      usersArray.forEach(function(user) {
+        userEmails.push(user.get('email'));
       });
+      return userEmails;
     })
     .catch(function(error) {
       console.log('Error retrieving housemate emails: ', error);
